@@ -19,7 +19,7 @@ class NASANeoWSClient:
         response.raise_for_status()
         return response.json()
 
-    def get_asteroid_by_name(self, asteroid_name: str) -> dict:
+    def get_asteroid_by_id(self, asteroid_name: str) -> dict:
         asteroid_url = f"{self._base_url}/neo/search"
         breakpoint()
         response = self._client.get(

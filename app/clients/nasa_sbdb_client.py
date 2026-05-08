@@ -3,23 +3,17 @@ import httpx
 from app.config import settings
 
 
-class NASASentryClient:
+class NASASbdbClient:
 
     def __init__(self, http_client: httpx.Client):
         self._client = http_client
-        self.base_url = settings.NASA_JPL_SENTRY_BASE_URL
-
-    def get_impact_data(self, impact_probability: str = "1e-3") -> list[dict]:
-        params = {
-            "all": 1,
-            "ip-min": impact_probability,
-        }
-        return self._client.get(self.base_url, params=params).json()["data"]
+        self.base_url = settings.NASA_JPL_SBDB_BASE_URL
 
     def get_asteroid_by_name(self, asteroid_name: str) -> str:
         params = {
             "des": asteroid_name,
         }
+        breakpoint()
         response = self._client.get(self.base_url, params=params).json()
         if response["count"] == 0:
             raise ValueError(f"No asteroid found with name {asteroid_name}")

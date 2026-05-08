@@ -1,5 +1,7 @@
 from app.clients.nasa_neows_client import NASANeoWSClient
+from app.clients.nasa_sbdb_client import NASASbdbClient
 from app.clients.nasa_sentry_client import NASASentryClient
+from app.schemas.asteroid import AsteroidSchema
 from app.schemas.impact_event import ImpactEventSchema
 
 
@@ -8,12 +10,19 @@ SCALE_FACTOR = 1_000_000
 
 class AsteroidService:
 
-    def __init__(self, nasa_neows_client: NASANeoWSClient, nasa_sentry_client: NASASentryClient) -> None:
+    def __init__(
+            self,
+            nasa_neows_client: NASANeoWSClient,
+            nasa_sentry_client: NASASentryClient,
+            nasa_sbdb_client: NASASbdbClient
+    ) -> None:
         self.nasa_neows_client = nasa_neows_client
         self.nasa_sentry_client = nasa_sentry_client
+        self.nasa_sbdb_client = nasa_sbdb_client
 
     def get_asteroid_by_name(self, asteroid_name: str):
-        return self.nasa_neows_client.get_asteroid_by_name(asteroid_name)
+        asteroid = self.nasa_sbdb_client.get_asteroid_by_name(asteroid_name)
+        return AsteroidSchema()
 
     def get_impact_data(self, impact_probability: str = "1e-3") -> list[ImpactEventSchema]:
         impact_events = self.nasa_sentry_client.get_impact_data(impact_probability)
