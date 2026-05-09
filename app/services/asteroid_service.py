@@ -22,7 +22,10 @@ class AsteroidService:
 
     def get_asteroid_by_name(self, asteroid_name: str):
         asteroid = self.nasa_sbdb_client.get_asteroid_by_name(asteroid_name)
-        return AsteroidSchema()
+        return AsteroidSchema(
+            asteroid_id=asteroid["object"]["spkid"],
+            name=asteroid["object"]["des"],
+        )
 
     def get_impact_data(self, impact_probability: str = "1e-3") -> list[ImpactEventSchema]:
         impact_events = self.nasa_sentry_client.get_impact_data(impact_probability)

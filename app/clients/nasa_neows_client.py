@@ -21,7 +21,6 @@ class NASANeoWSClient:
 
     def get_asteroid_by_id(self, asteroid_name: str) -> dict:
         asteroid_url = f"{self._base_url}/neo/search"
-        breakpoint()
         response = self._client.get(
             asteroid_url,
             params={"api_key": self._api_key, "name": asteroid_name},
