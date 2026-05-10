@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from app.api.dependencies import get_asteroid_service
+from app.schemas.asteroid import AsteroidSchema
 from app.services.asteroid_service import AsteroidService
 
 
@@ -13,5 +14,5 @@ router = APIRouter(
 def get_asteroid_by_name(
         asteroid_name: str,
         asteroid_service: AsteroidService = Depends(get_asteroid_service),
-) -> dict:
+) -> AsteroidSchema:
     return asteroid_service.get_asteroid_by_name(asteroid_name)
