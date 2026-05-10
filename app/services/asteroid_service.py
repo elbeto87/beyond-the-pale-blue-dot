@@ -22,9 +22,14 @@ class AsteroidService:
 
     def get_asteroid_by_name(self, asteroid_name: str) -> AsteroidSchema:
         asteroid = self.nasa_sbdb_client.get_asteroid_by_name(asteroid_name)
+        asteroid_physical_data = self.nasa_neo_ws_client.get_asteroid_by_id(asteroid["spkid"])
+        asteroid_estimated_diameter = asteroid_physical_data["estimated_diameter"]["meters"]
+        asteroid_diameter_aprox = round((asteroid_estimated_diameter["estimated_diameter_min"] + asteroid_estimated_diameter["estimated_diameter_max"]) / 2, 2)
         return AsteroidSchema(
             asteroid_id=asteroid["spkid"],
             name=asteroid["des"],
+            estimated_diameter=asteroid_diameter_aprox,
+            absolute_magnitude_h=asteroid_physical_data["absolute_magnitude_h"]
         )
 
     def get_impact_data(self, count: int = 1, impact_probability: str = "1e-3") -> list[ImpactEventSchema]:
