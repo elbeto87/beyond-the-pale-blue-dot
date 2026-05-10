@@ -7,7 +7,7 @@ class NASANeoWsClient:
 
     def __init__(self, http_client: httpx.Client):
         self._client = http_client
-        self._base_url = settings.NASA_NEOWS_BASE_URL
+        self._base_url = settings.NASA_NEO_WS_BASE_URL
         self._api_key = settings.NASA_API_KEY
 
     def get_asteroid_by_id(self, asteroid_id: str) -> dict:
