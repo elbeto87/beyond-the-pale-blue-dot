@@ -1,3 +1,4 @@
+from app.clients.nasa_neo_ws_client import NASANeoWsClient
 from app.clients.nasa_sbdb_client import NASASbdbClient
 from app.clients.nasa_sentry_client import NASASentryClient
 from app.schemas.asteroid import AsteroidSchema
@@ -13,9 +14,11 @@ class AsteroidService:
             self,
             nasa_sentry_client: NASASentryClient,
             nasa_sbdb_client: NASASbdbClient,
+            nasa_neo_ws_client: NASANeoWsClient
     ) -> None:
         self.nasa_sentry_client = nasa_sentry_client
         self.nasa_sbdb_client = nasa_sbdb_client
+        self.nasa_neo_ws_client = nasa_neo_ws_client
 
     def get_asteroid_by_name(self, asteroid_name: str) -> AsteroidSchema:
         asteroid = self.nasa_sbdb_client.get_asteroid_by_name(asteroid_name)
