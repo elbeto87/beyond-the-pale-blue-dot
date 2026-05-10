@@ -5,7 +5,7 @@ from app.schemas.asteroid import AsteroidSchema
 
 class ImpactEventSchema(BaseModel):
     impact_event_id: str
-    asteroid: str
+    asteroid: AsteroidSchema
     date: str
     impact_probability: float
     energy: float

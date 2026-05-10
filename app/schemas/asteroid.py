@@ -4,6 +4,5 @@ from pydantic import BaseModel
 class AsteroidSchema(BaseModel):
     asteroid_id: str
     name: str
-    diameter_min: float
-    diameter_max: float
-    is_potentially_hazardous: bool
+    estimated_diameter: float | None = 0.0
+    absolute_magnitude_h: float | None = 0.0
