@@ -1,7 +1,6 @@
 from http import HTTPStatus
 
 import httpx
-from pip._internal.operations.build import build_tracker
 
 from app.config import settings
 

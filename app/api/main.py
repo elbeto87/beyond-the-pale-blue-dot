@@ -8,9 +8,6 @@ app = FastAPI(
     docs_url="/",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
-    docs_url_path="/docs",
-    redoc_url_path="/redoc",
-    openapi_path="/openapi.json"
 )
 
 app.include_router(asteroid.router, prefix="/asteroid")

@@ -21,6 +21,5 @@ class NASASentryClient:
             "des": asteroid_name,
         }
         response = self._client.get(self.base_url, params=params).json()
-        if response["count"] == 0:
-            raise ValueError(f"No asteroid found with name {asteroid_name}")
+        response.raise_for_status()
         return response["data"][0]["des"]
