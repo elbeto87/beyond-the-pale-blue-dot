@@ -1,4 +1,4 @@
-from app.clients.nasa_neows_client import NASANeoWSClient
+from app.clients.nasa_neows_client import NASANeoWsClient
 from app.clients.nasa_sbdb_client import NASASbdbClient
 from app.clients.nasa_sentry_client import NASASentryClient
 from app.schemas.asteroid import AsteroidSchema
@@ -12,19 +12,21 @@ class AsteroidService:
 
     def __init__(
             self,
-            nasa_neows_client: NASANeoWSClient,
             nasa_sentry_client: NASASentryClient,
-            nasa_sbdb_client: NASASbdbClient
+            nasa_sbdb_client: NASASbdbClient,
+            nasa_neo_ws_client: NASANeoWsClient,
     ) -> None:
-        self.nasa_neows_client = nasa_neows_client
         self.nasa_sentry_client = nasa_sentry_client
         self.nasa_sbdb_client = nasa_sbdb_client
+        self.nasa_neo_ws_client = nasa_neo_ws_client
 
     def get_asteroid_by_name(self, asteroid_name: str):
         asteroid = self.nasa_sbdb_client.get_asteroid_by_name(asteroid_name)
         return AsteroidSchema(
-            asteroid_id=asteroid["object"]["spkid"],
-            name=asteroid["object"]["des"],
+            asteroid_id=asteroid["spkid"],
+            name=asteroid["des"],
+            is_neo=asteroid["neo"],
+            is_potentially_hazardous=asteroid["pha"],
         )
 
     def get_impact_data(self, impact_probability: str = "1e-3") -> list[ImpactEventSchema]:
