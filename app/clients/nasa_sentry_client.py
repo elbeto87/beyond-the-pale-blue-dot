@@ -20,6 +20,6 @@ class NASASentryClient:
         params = {
             "des": asteroid_name,
         }
-        response = self._client.get(self.base_url, params=params).json()
+        response = self._client.get(self.base_url, params=params)
         response.raise_for_status()
-        return response["data"][0]["des"]
+        return response.json()["data"][0]["des"]

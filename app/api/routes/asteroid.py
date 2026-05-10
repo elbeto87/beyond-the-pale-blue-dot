@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends
 
 from app.api.dependencies import get_asteroid_service
-from app.services import asteroid_service
 from app.services.asteroid_service import AsteroidService
 
 
