@@ -1,5 +1,3 @@
-from http import HTTPStatus
-
 import httpx
 
 from app.config import settings

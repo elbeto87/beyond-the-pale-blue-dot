@@ -3,7 +3,6 @@ name = "the-end-of-the-world"
 version = "0.1.0"
 description = "FastAPI application to demonstrate the end of the world."
 authors = ["elbeto87"]
-readme = "[README.md](http://readme.md/)"
 packages = [{include = "app"}]
 package-mode = false
 
