@@ -1,20 +1,19 @@
 import httpx
 
-from app.clients.nasa_neo_ws_client import NASANeoWsClient
-from app.clients.nasa_sbdb_client import NASASbdbClient
-from app.clients.nasa_sentry_client import NASASentryClient
-from app.services.asteroid_service import AsteroidService
+from app.config import settings
 
+
+def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-3"):
+    params = {
+        "all": 1,
+        "ip-min": impact_probability,
+    }
+    return client.get(settings.NASA_JPL_SENTRY_BASE_URL, params=params).json()["data"]
 
 def populate_asteroids_database():
     with httpx.Client() as client:
-        asteroid_service = AsteroidService(
-            nasa_sbdb_client=NASASbdbClient(client),
-            nasa_neo_ws_client=NASANeoWsClient(client),
-            nasa_sentry_client=NASASentryClient(client),
-        )
-        results = asteroid_service.get_impact_data()
-        breakpoint()
+        impact_events = get_impact_event_data(client=client)
+        print(impact_events)
 
 if __name__ == "__main__":
     populate_asteroids_database()
