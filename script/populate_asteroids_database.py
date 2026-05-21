@@ -62,6 +62,8 @@ def populate_impact_event_database():
             impact_events = get_impact_event_data(client=client)
             for impact_event in impact_events:
                 asteroid_model = get_asteroid(client=client, asteroid_name=impact_event["des"])
+                db.merge(asteroid_model)
+                db.flush()
                 impact_event_model = ImpactEventModel(
                         impact_event_id=impact_event["id"],
                         asteroid_id=asteroid_model.asteroid_id,
@@ -71,11 +73,10 @@ def populate_impact_event_database():
                         dangerous_score=round(float(impact_event["ip"]) * float(impact_event["energy"]) * SCALE_FACTOR, 2),
                     )
                 db.merge(impact_event_model)
-                db.merge(asteroid_model)
         db.commit()
-    except Exception:
+    except Exception as e:
         db.rollback()
-        raise
+        print(f"Failed to populate impact event database due to {e}")
     finally:
         db.close()
 

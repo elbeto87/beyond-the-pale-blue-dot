@@ -10,6 +10,29 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d end_of_the_world" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  db-migrate:
+    build: .
+    command: alembic upgrade head
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+
+  db-init:
+    build: .
+    command: python -m script.populate_asteroids_database
+    depends_on:
+      db-migrate:
+        condition: service_completed_successfully
+    env_file:
+      - .env
 
   api:
     build: .
@@ -19,7 +42,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
+      db-init:
+        condition: service_completed_successfully
     volumes:
       - .:/app
 
