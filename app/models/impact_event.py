@@ -18,6 +18,6 @@ class ImpactEventModel(Base):
     date: Mapped[str] = mapped_column(String)
     impact_probability: Mapped[float] = mapped_column(Float)
     energy: Mapped[float] = mapped_column(Float)
-    dangerous: Mapped[float] = mapped_column(Float)
+    dangerous_score: Mapped[float] = mapped_column(Float)
 
-    asteroid: Mapped["AsteroidModel"] = relationship(back_populates="impact_event")
+    asteroid: Mapped["AsteroidModel"] = relationship(back_populates="impact_events")
