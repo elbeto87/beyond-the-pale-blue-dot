@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "FastAPI application to demonstrate the end of the world."
 authors = ["elbeto87"]
 packages = [{include = "app"}]
-package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
