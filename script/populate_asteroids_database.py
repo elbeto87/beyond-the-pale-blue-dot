@@ -1,9 +1,9 @@
 import httpx
 
 from app.config import settings
-from app.schemas.asteroid import AsteroidSchema
-from app.schemas.impact_event import ImpactEventSchema
-
+from app.database import SessionLocal
+from app.models.asteroid import AsteroidModel
+from app.models.impact_event import ImpactEventModel
 
 SCALE_FACTOR = 1_000_000
 
@@ -34,7 +34,7 @@ def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-3"
     response.raise_for_status()
     return response.json()["data"]
 
-def get_asteroid(client: httpx.Client, asteroid_name: str) -> AsteroidSchema:
+def get_asteroid(client: httpx.Client, asteroid_name: str) -> AsteroidModel:
     asteroid_basic_data = get_asteroid_basic_data(
         client=client,
         asteroid_name=asteroid_name,
@@ -47,7 +47,7 @@ def get_asteroid(client: httpx.Client, asteroid_name: str) -> AsteroidSchema:
     min_diameter = asteroid_estimated_diameter["estimated_diameter_min"]
     max_diameter = asteroid_estimated_diameter["estimated_diameter_max"]
     asteroid_diameter_aprox = round((min_diameter+max_diameter) / 2, 2)
-    return AsteroidSchema(
+    return AsteroidModel(
         asteroid_id=asteroid_basic_data["spkid"],
         name=asteroid_basic_data["des"],
         estimated_diameter=asteroid_diameter_aprox,
@@ -55,20 +55,29 @@ def get_asteroid(client: httpx.Client, asteroid_name: str) -> AsteroidSchema:
     )
 
 
-def populate_impact_event_database() -> list[ImpactEventSchema]:
-    with httpx.Client() as client:
-        impact_events = get_impact_event_data(client=client)
-        print(impact_events)
-        return [
-            ImpactEventSchema(
-                impact_event_id=impact_event["id"],
-                asteroid=get_asteroid(client=client, asteroid_name=impact_event["des"]),
-                date=impact_event["date"],
-                impact_probability=round(float(impact_event["ip"]), 4),
-                energy=round(float(impact_event["energy"]), 4) * 1000,  # Expressed in kt
-                dangerous_score=round(float(impact_event["ip"]) * float(impact_event["energy"]) * SCALE_FACTOR, 2),
-            ) for impact_event in impact_events
-        ]
+def populate_impact_event_database():
+    db = SessionLocal()
+    try:
+        with httpx.Client() as client:
+            impact_events = get_impact_event_data(client=client)
+            for impact_event in impact_events:
+                asteroid_model = get_asteroid(client=client, asteroid_name=impact_event["des"])
+                impact_event_model = ImpactEventModel(
+                        impact_event_id=impact_event["id"],
+                        asteroid_id=asteroid_model.asteroid_id,
+                        date=impact_event["date"],
+                        impact_probability=round(float(impact_event["ip"]), 4),
+                        energy=round(float(impact_event["energy"]), 4) * 1000,  # Expressed in kt
+                        dangerous_score=round(float(impact_event["ip"]) * float(impact_event["energy"]) * SCALE_FACTOR, 2),
+                    )
+                db.merge(impact_event_model)
+                db.merge(asteroid_model)
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    finally:
+        db.close()
 
 
 
