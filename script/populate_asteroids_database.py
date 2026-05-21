@@ -1,4 +1,7 @@
+import time
+
 import httpx
+from sqlalchemy.exc import IntegrityError
 
 from app.config import settings
 from app.database import SessionLocal
@@ -25,7 +28,7 @@ def get_asteroid_basic_data(client: httpx.Client, asteroid_name: str) -> dict:
     response.raise_for_status()
     return response.json()["object"]
 
-def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-3"):
+def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-4"):
     params = {
         "all": 1,
         "ip-min": impact_probability,
@@ -61,21 +64,30 @@ def populate_impact_event_database():
         with httpx.Client() as client:
             impact_events = get_impact_event_data(client=client)
             for impact_event in impact_events:
-                asteroid_model = get_asteroid(client=client, asteroid_name=impact_event["des"])
-                db.merge(asteroid_model)
-                db.flush()
-                impact_event_model = ImpactEventModel(
-                        impact_event_id=impact_event["id"],
-                        asteroid_id=asteroid_model.asteroid_id,
-                        date=impact_event["date"],
-                        impact_probability=round(float(impact_event["ip"]), 4),
-                        energy=round(float(impact_event["energy"]), 4) * 1000,  # Expressed in kt
-                        dangerous_score=round(float(impact_event["ip"]) * float(impact_event["energy"]) * SCALE_FACTOR, 2),
-                    )
-                db.merge(impact_event_model)
-        db.commit()
+                try:
+                    asteroid_model = get_asteroid(client=client, asteroid_name=impact_event["des"])
+                    db.merge(asteroid_model)
+                    db.flush()
+                    impact_event_model = ImpactEventModel(
+                            impact_event_id=impact_event["id"],
+                            asteroid_id=asteroid_model.asteroid_id,
+                            date=impact_event["date"],
+                            impact_probability=round(float(impact_event["ip"]), 4),
+                            energy=round(float(impact_event["energy"]), 4) * 1000,  # Expressed in kt
+                            dangerous_score=round(float(impact_event["ip"]) * float(impact_event["energy"]) * SCALE_FACTOR, 2),
+                        )
+                    db.merge(impact_event_model)
+                    db.commit()
+                    print(f"Impact event ID has been added: #{impact_event_model.impact_event_id}")
+                except IntegrityError:
+                    db.rollback()
+                    print(f"Impact event ID already exists: #{impact_event_model.impact_event_id}")
+                except Exception as e:
+                    db.rollback()
+                    print(f"Failed to add impact event ID #{impact_event_model.impact_event_id} due to {e}")
+                finally:
+                    time.sleep(0.5)
     except Exception as e:
-        db.rollback()
         print(f"Failed to populate impact event database due to {e}")
     finally:
         db.close()
