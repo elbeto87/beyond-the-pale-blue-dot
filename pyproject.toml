@@ -12,6 +12,8 @@ uvicorn = {extras = ["standard"], version = "^0.34"}
 httpx = "^0.28"
 pydantic-settings = "^2.7"
 sqlalchemy = "^2.0.49"
+psycopg2-binary = "^2.9.12"
+alembic = "^1.18.4"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0"
