@@ -7,6 +7,9 @@ from app.config import settings
 from app.database import SessionLocal
 from app.models.asteroid import AsteroidModel
 from app.models.impact_event import ImpactEventModel
+from repositories.asteroid import AsteroidRepository
+from repositories.impact_event import ImpactEventRepository
+
 
 SCALE_FACTOR = 1_000_000
 
@@ -59,15 +62,22 @@ def get_asteroid(client: httpx.Client, asteroid_name: str) -> AsteroidModel:
 
 
 def populate_impact_event_database():
-    db = SessionLocal()
+    session = SessionLocal()
+    impact_event_repository = ImpactEventRepository(session=session)
+    asteroid_repository = AsteroidRepository(session=session)
     try:
         with httpx.Client() as client:
             impact_events = get_impact_event_data(client=client)
             for impact_event in impact_events:
                 try:
-                    asteroid_model = get_asteroid(client=client, asteroid_name=impact_event["des"])
-                    db.merge(asteroid_model)
-                    db.flush()
+                    if impact_event_repository.get_impact_event_by_id(impact_event["id"]):
+                        print(f"Impact event ID already exists: #{impact_event['id']}")
+                        continue
+                    if not asteroid_repository.get_asteroid_by_name(impact_event["des"]):
+                        print(f"Asteroid '{impact_event['des']}' does not exist")
+                        asteroid_model = get_asteroid(client=client, asteroid_name=impact_event["des"])
+                        session.merge(asteroid_model)
+                        session.flush()
                     impact_event_model = ImpactEventModel(
                             impact_event_id=impact_event["id"],
                             asteroid_id=asteroid_model.asteroid_id,
@@ -76,21 +86,21 @@ def populate_impact_event_database():
                             energy=round(float(impact_event["energy"]), 4) * 1000,  # Expressed in kt
                             dangerous_score=round(float(impact_event["ip"]) * float(impact_event["energy"]) * SCALE_FACTOR, 2),
                         )
-                    db.merge(impact_event_model)
-                    db.commit()
+                    session.merge(impact_event_model)
+                    session.commit()
                     print(f"Impact event ID has been added: #{impact_event_model.impact_event_id}")
                 except IntegrityError:
-                    db.rollback()
+                    session.rollback()
                     print(f"Impact event ID already exists: #{impact_event_model.impact_event_id}")
                 except Exception as e:
-                    db.rollback()
+                    session.rollback()
                     print(f"Failed to add impact event ID #{impact_event_model.impact_event_id} due to {e}")
                 finally:
                     time.sleep(0.5)
     except Exception as e:
         print(f"Failed to populate impact event database due to {e}")
     finally:
-        db.close()
+        session.close()
 
 
 

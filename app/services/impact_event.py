@@ -1,6 +1,6 @@
 from app.schemas.impact_event import ImpactEventSchema
 from app.repositories.impact_event import ImpactEventRepository
-from exceptions import ImpactEventNotFoundException
+from app.exceptions import ImpactEventNotFoundException
 
 
 class ImpactEventService:

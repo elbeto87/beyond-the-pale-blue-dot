@@ -14,3 +14,7 @@ class ImpactEventRepository:
     def get_top_risk_impact_events(self, count: int = 10) -> Sequence[ImpactEventModel]:
         stmt = select(ImpactEventModel).order_by(ImpactEventModel.dangerous_score.desc()).limit(count)
         return self._session.execute(stmt).scalars().all()
+
+    def get_impact_event_by_id(self, event_id: int) -> ImpactEventModel | None:
+        stmt = select(ImpactEventModel).where(ImpactEventModel.impact_event_id == event_id)
+        return self._session.execute(stmt).scalar_one_or_none()
