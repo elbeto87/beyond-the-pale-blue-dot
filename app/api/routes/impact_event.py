@@ -15,5 +15,4 @@ def get_top_risk_impact_data(
         count: int = Query(1, ge=1, description="Number of top risk impact events to retrieve"),
         asteroid_service: ImpactEventService = Depends(get_asteroid_service),
 ) -> list[ImpactEventSchema]:
-    impact_data = asteroid_service.get_top_risk_impact_data(count=count)
-    return impact_data
+    return asteroid_service.get_top_risk_impact_data(count=count)
