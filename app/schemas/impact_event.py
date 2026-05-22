@@ -10,3 +10,5 @@ class ImpactEventSchema(BaseModel):
     impact_probability: float
     energy: float
     dangerous_score: float
+
+    model_config = {"from_attribute": True}

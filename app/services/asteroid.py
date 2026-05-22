@@ -2,9 +2,6 @@ from http import HTTPStatus
 
 from fastapi import HTTPException
 
-from app.clients.nasa_neo_ws_client import NASANeoWsClient
-from app.clients.nasa_sbdb_client import NASASbdbClient
-from app.clients.nasa_sentry_client import NASASentryClient
 from app.schemas.asteroid import AsteroidSchema
 from app.schemas.impact_event import ImpactEventSchema
 from repositories.asteroid import AsteroidRepository
@@ -29,9 +26,9 @@ class AsteroidService:
             raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Asteroid not found")
         return AsteroidSchema.model_validate(asteroid)
 
-    def get_impact_data(self, count: int = 1, impact_probability: str = "1e-3") -> list[ImpactEventSchema]:
-        pass
-
-
-    def get_top_risk_impact_data(self, count: int = 1) -> list[ImpactEventSchema]:
-        pass
+    def get_top_risk_impact_data(self, count: int = 10) -> list[ImpactEventSchema]:
+        impact_events = self.impact_event_repository.get_top_risk_impact_events(count)
+        return [
+            ImpactEventSchema.model_validate(impact_event)
+            for impact_event in impact_events
+        ]
