@@ -28,7 +28,7 @@ def get_asteroid_basic_data(client: httpx.Client, asteroid_name: str) -> dict:
     response.raise_for_status()
     return response.json()["object"]
 
-def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-4"):
+def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-5"):
     params = {
         "all": 1,
         "ip-min": impact_probability,

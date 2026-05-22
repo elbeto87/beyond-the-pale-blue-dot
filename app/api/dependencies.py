@@ -6,7 +6,7 @@ from fastapi import Depends
 from app.clients.nasa_neo_ws_client import NASANeoWsClient
 from app.clients.nasa_sbdb_client import NASASbdbClient
 from app.clients.nasa_sentry_client import NASASentryClient
-from app.services.asteroid_service import AsteroidService
+from app.services.asteroid import AsteroidService
 
 
 def get_nasa_sentry_client() -> Generator[NASASentryClient, None, None]:

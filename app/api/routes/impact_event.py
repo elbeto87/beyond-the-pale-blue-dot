@@ -2,7 +2,7 @@ from fastapi import Depends, APIRouter, Query
 
 from app.api.dependencies import get_asteroid_service
 from app.schemas.impact_event import ImpactEventSchema
-from app.services.asteroid_service import AsteroidService
+from app.services.asteroid import AsteroidService
 
 
 router = APIRouter(
