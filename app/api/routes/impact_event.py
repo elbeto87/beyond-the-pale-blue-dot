@@ -13,6 +13,6 @@ router = APIRouter(
 @router.get("/top_risk")
 def get_top_risk_impact_data(
         count: int = Query(1, ge=1, description="Number of top risk impact events to retrieve"),
-        asteroid_service: ImpactEventService = Depends(get_asteroid_service),
+        impact_event_service: ImpactEventService = Depends(get_asteroid_service),
 ) -> list[ImpactEventSchema]:
-    return asteroid_service.get_top_risk_impact_data(count=count)
+    return impact_event_service.get_top_risk_impact_data(count=count)

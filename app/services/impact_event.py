@@ -3,7 +3,6 @@ from http import HTTPStatus
 from fastapi import HTTPException
 
 from app.schemas.impact_event import ImpactEventSchema
-from repositories.asteroid import AsteroidRepository
 from repositories.impact_event import ImpactEventRepository
 
 

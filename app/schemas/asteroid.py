@@ -7,4 +7,4 @@ class AsteroidSchema(BaseModel):
     estimated_diameter: float | None = 0.0
     absolute_magnitude_h: float | None = 0.0
 
-    model_config = {"from_attribute": True}
+    model_config = {"from_attributes": True}

@@ -4,10 +4,10 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from app.services.impact_event import ImpactEventService
-from database import SessionLocal
-from repositories.asteroid import AsteroidRepository
-from repositories.impact_event import ImpactEventRepository
-from services.asteroid import AsteroidService
+from app.database import SessionLocal
+from app.repositories.asteroid import AsteroidRepository
+from app.repositories.impact_event import ImpactEventRepository
+from app.services.asteroid import AsteroidService
 
 
 def get_session() -> Generator[Session, None, None]:
