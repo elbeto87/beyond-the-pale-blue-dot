@@ -7,8 +7,8 @@ from app.config import settings
 from app.database import SessionLocal
 from app.models.asteroid import AsteroidModel
 from app.models.impact_event import ImpactEventModel
-from repositories.asteroid import AsteroidRepository
-from repositories.impact_event import ImpactEventRepository
+from app.repositories.asteroid import AsteroidRepository
+from app.repositories.impact_event import ImpactEventRepository
 
 
 SCALE_FACTOR = 1_000_000
@@ -31,7 +31,7 @@ def get_asteroid_basic_data(client: httpx.Client, asteroid_name: str) -> dict:
     response.raise_for_status()
     return response.json()["object"]
 
-def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-5"):
+def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-6"):
     params = {
         "all": 1,
         "ip-min": impact_probability,
@@ -89,14 +89,13 @@ def populate_impact_event_database():
                     session.merge(impact_event_model)
                     session.commit()
                     print(f"Impact event ID has been added: #{impact_event_model.impact_event_id}")
+                    time.sleep(0.5)
                 except IntegrityError:
                     session.rollback()
                     print(f"Impact event ID already exists: #{impact_event_model.impact_event_id}")
                 except Exception as e:
                     session.rollback()
                     print(f"Failed to add impact event ID #{impact_event_model.impact_event_id} due to {e}")
-                finally:
-                    time.sleep(0.5)
     except Exception as e:
         print(f"Failed to populate impact event database due to {e}")
     finally:

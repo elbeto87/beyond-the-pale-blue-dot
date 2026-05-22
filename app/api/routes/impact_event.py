@@ -2,10 +2,10 @@ from http import HTTPStatus
 
 from fastapi import Depends, APIRouter, Query, HTTPException
 
-from api.dependencies import get_impact_event_service
+from app.api.dependencies import get_impact_event_service
 from app.schemas.impact_event import ImpactEventSchema
 from app.services.impact_event import ImpactEventService
-from exceptions import AsteroidNotFoundException, ImpactEventNotFoundException
+from app.exceptions import ImpactEventNotFoundException
 
 router = APIRouter(
     tags=["impact_event"],

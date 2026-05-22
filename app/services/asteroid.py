@@ -1,6 +1,6 @@
 from app.repositories.asteroid import AsteroidRepository
 from app.schemas.asteroid import AsteroidSchema
-from exceptions import AsteroidNotFoundException
+from app.exceptions import AsteroidNotFoundException
 
 
 class AsteroidService:
