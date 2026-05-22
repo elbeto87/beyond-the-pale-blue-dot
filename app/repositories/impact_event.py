@@ -3,7 +3,7 @@ from typing import Sequence
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from models.impact_event import ImpactEventModel
+from app.models.impact_event import ImpactEventModel
 
 
 class ImpactEventRepository:

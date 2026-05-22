@@ -1,9 +1,6 @@
-from http import HTTPStatus
-
-from fastapi import HTTPException
-
-from repositories.asteroid import AsteroidRepository
-from schemas.asteroid import AsteroidSchema
+from app.repositories.asteroid import AsteroidRepository
+from app.schemas.asteroid import AsteroidSchema
+from exceptions import AsteroidNotFoundException
 
 
 class AsteroidService:
@@ -14,5 +11,5 @@ class AsteroidService:
     def get_asteroid_by_name(self, asteroid_name: str) -> AsteroidSchema:
         asteroid = self.asteroid_repository.get_asteroid_by_name(asteroid_name)
         if not asteroid:
-            raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Asteroid not found")
+            raise AsteroidNotFoundException
         return AsteroidSchema.model_validate(asteroid)

@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from models.asteroid import AsteroidModel
+from app.models.asteroid import AsteroidModel
 
 
 class AsteroidRepository:
