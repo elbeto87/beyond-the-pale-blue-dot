@@ -1,5 +1,23 @@
+from contextlib import asynccontextmanager
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.interval import IntervalTrigger
+
 from fastapi import FastAPI
 from app.api.routes import asteroid, impact_event
+from script.populate_asteroids_database import populate_impact_event_database
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    scheduler = AsyncIOScheduler()
+    scheduler.add_job(
+        populate_impact_event_database,
+        trigger=IntervalTrigger(hours=2),
+        id="populate_impact_event_database",
+        replace_existing=True,
+        max_instances=1,
+    )
+    yield
 
 app = FastAPI(
     title="The end of the world",
@@ -8,6 +26,7 @@ app = FastAPI(
     docs_url="/",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
+    lifespan=lifespan,
 )
 
 app.include_router(asteroid.router, prefix="/asteroid")

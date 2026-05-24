@@ -31,7 +31,7 @@ def get_asteroid_basic_data(client: httpx.Client, asteroid_name: str) -> dict:
     response.raise_for_status()
     return response.json()["object"]
 
-def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-6"):
+def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-5"):
     params = {
         "all": 1,
         "ip-min": impact_probability,
@@ -100,8 +100,3 @@ def populate_impact_event_database():
         print(f"Failed to populate impact event database due to {e}")
     finally:
         session.close()
-
-
-
-if __name__ == "__main__":
-    populate_impact_event_database()

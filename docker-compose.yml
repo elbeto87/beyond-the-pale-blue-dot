@@ -25,15 +25,6 @@ services:
     env_file:
       - .env
 
-  db-init:
-    build: .
-    command: python -m script.populate_asteroids_database
-    depends_on:
-      db-migrate:
-        condition: service_completed_successfully
-    env_file:
-      - .env
-
   api:
     build: .
     restart: always
@@ -41,9 +32,6 @@ services:
       - "8000:8000"
     env_file:
       - .env
-    depends_on:
-      db-init:
-        condition: service_completed_successfully
     volumes:
       - .:/app
 
