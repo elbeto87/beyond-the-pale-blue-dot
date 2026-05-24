@@ -1,6 +1,7 @@
 import time
 
 import httpx
+from loguru import logger
 from sqlalchemy.exc import IntegrityError
 
 from app.config import settings
@@ -71,10 +72,10 @@ def populate_impact_event_database():
             for impact_event in impact_events:
                 try:
                     if impact_event_repository.get_impact_event_by_id(impact_event["id"]):
-                        print(f"Impact event ID already exists: #{impact_event['id']}")
+                        logger.info(f"Impact event ID already exists: #{impact_event['id']}")
                         continue
                     if not asteroid_repository.get_asteroid_by_name(impact_event["des"]):
-                        print(f"Asteroid '{impact_event['des']}' does not exist")
+                        logger.info(f"Asteroid '{impact_event['des']}' does not exist")
                         asteroid_model = get_asteroid(client=client, asteroid_name=impact_event["des"])
                         session.merge(asteroid_model)
                         session.flush()
@@ -88,15 +89,16 @@ def populate_impact_event_database():
                         )
                     session.merge(impact_event_model)
                     session.commit()
-                    print(f"Impact event ID has been added: #{impact_event_model.impact_event_id}")
+                    logger.info(f"Impact event ID has been added: #{impact_event_model.impact_event_id}")
                     time.sleep(0.5)
                 except IntegrityError:
                     session.rollback()
-                    print(f"Impact event ID already exists: #{impact_event_model.impact_event_id}")
+                    logger.info(f"Impact event ID already exists: #{impact_event_model.impact_event_id}")
                 except Exception as e:
                     session.rollback()
-                    print(f"Failed to add impact event ID #{impact_event_model.impact_event_id} due to {e}")
+                    logger.info(f"Failed to add impact event ID #{impact_event_model.impact_event_id} due to {e}")
     except Exception as e:
-        print(f"Failed to populate impact event database due to {e}")
+        logger.error(f"Failed to populate impact event database due to {e}")
     finally:
+        logger.info(f"Populating impact event database completed.")
         session.close()

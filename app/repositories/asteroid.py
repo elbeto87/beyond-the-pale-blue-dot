@@ -1,3 +1,4 @@
+from loguru import logger
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -11,4 +12,5 @@ class AsteroidRepository:
 
     def get_asteroid_by_name(self, asteroid_name: str) -> AsteroidModel | None:
         stmt = select(AsteroidModel).where(AsteroidModel.name == asteroid_name)
+        logger.debug("Executing query to get asteroid by name: {}", stmt)
         return self._session.execute(stmt).scalar_one_or_none()

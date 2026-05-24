@@ -1,14 +1,21 @@
 from contextlib import asynccontextmanager
+from datetime import datetime
+
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
 from fastapi import FastAPI
+from loguru import logger
+
 from app.api.routes import asteroid, impact_event
+from logging import setup_logging
 from script.populate_asteroids_database import populate_impact_event_database
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    setup_logging()
+    logger.info("Starting the application...")
     scheduler = AsyncIOScheduler()
     scheduler.add_job(
         populate_impact_event_database,
@@ -16,9 +23,11 @@ async def lifespan(app: FastAPI):
         id="populate_impact_event_database",
         replace_existing=True,
         max_instances=1,
+        next_run_time=datetime.now(),
     )
     scheduler.start()
     yield
+    logger.info("Stopping the application...")
     scheduler.shutdown()
 
 app = FastAPI(
