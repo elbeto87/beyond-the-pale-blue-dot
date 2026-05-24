@@ -84,7 +84,7 @@ def populate_impact_event_database():
                     logger.info(f"Impact event '{impact_event['id']}' with asteroid '{asteroid_model.asteroid_id}' will be added to the database")
                     impact_event_model = ImpactEventModel(
                             impact_event_id=impact_event["id"],
-                            asteroid_id=asteroid_model.asteroid_id if asteroid_model else None,
+                            asteroid_id=asteroid_model.asteroid_id,
                             date=impact_event["date"],
                             impact_probability=round(float(impact_event["ip"]), 4),
                             energy=round(float(impact_event["energy"]), 4) * 1000,  # Expressed in kt
@@ -96,7 +96,8 @@ def populate_impact_event_database():
                     time.sleep(0.5)
                 except IntegrityError:
                     session.rollback()
-                    logger.info(f"Impact event ID already exists: #{impact_event_model.impact_event_id}")
+                    if impact_event_model:
+                        logger.info(f"Impact event ID already exists: #{impact_event_model.impact_event_id}")
                 except HTTPStatusError as e:
                     logger.error(
                         "NASA API request failed with status code {}: {}",
@@ -105,7 +106,8 @@ def populate_impact_event_database():
                     )
                 except Exception as e:
                     session.rollback()
-                    logger.info(f"Failed to add impact event ID #{impact_event_model.impact_event_id} due to {e}")
+                    if impact_event_model:
+                        logger.info(f"Failed to add impact event ID #{impact_event_model.impact_event_id} due to {e}")
     except Exception as e:
         logger.error(f"Failed to populate impact event database due to {e}")
     finally:

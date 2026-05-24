@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class AsteroidModel(Base):
     __tablename__ = "asteroids"
     
-    asteroid_id: Mapped[str] = Column(String, primary_key=True)
+    asteroid_id: Mapped[str] = mapped_column(String, primary_key=True)
     name: Mapped[str] = mapped_column(String, unique=True, index=True)
     estimated_diameter: Mapped[float | None] = mapped_column(Float, default=0.0)
     absolute_magnitude_h: Mapped[float | None] = mapped_column(Float, default=0.0)
