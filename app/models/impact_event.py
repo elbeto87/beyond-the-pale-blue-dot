@@ -14,7 +14,7 @@ class ImpactEventModel(Base):
     __tablename__ = "impact_events"
 
     impact_event_id: Mapped[str] = mapped_column(String, primary_key=True)
-    asteroid_id: Mapped[str] | None = mapped_column(ForeignKey("asteroids.asteroid_id"))
+    asteroid_id: Mapped[str] = mapped_column(ForeignKey("asteroids.asteroid_id"))
     date: Mapped[Date] = mapped_column(Date)
     impact_probability: Mapped[float] = mapped_column(Float)
     energy: Mapped[float] = mapped_column(Numeric(precision=20, scale=2))

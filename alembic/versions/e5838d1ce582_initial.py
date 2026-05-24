@@ -31,7 +31,7 @@ def upgrade() -> None:
     op.create_index(op.f('ix_asteroids_name'), 'asteroids', ['name'], unique=True)
     op.create_table('impact_events',
     sa.Column('impact_event_id', sa.String(), nullable=False),
-    sa.Column('asteroid_id', sa.String(), nullable=True),
+    sa.Column('asteroid_id', sa.String(), nullable=False),
     sa.Column('date', sa.String(), nullable=False),
     sa.Column('impact_probability', sa.Float(), nullable=False),
     sa.Column('energy', sa.Numeric(precision=20, scale=2), nullable=False),
