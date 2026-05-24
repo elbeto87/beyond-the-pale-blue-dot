@@ -8,7 +8,7 @@ from fastapi import FastAPI
 from loguru import logger
 
 from app.api.routes import asteroid, impact_event
-from logging import setup_logging
+from app.logging import setup_logging
 from script.populate_asteroids_database import populate_impact_event_database
 
 

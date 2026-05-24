@@ -1,6 +1,7 @@
 import time
 
 import httpx
+from httpx import HTTPStatusError
 from loguru import logger
 from sqlalchemy.exc import IntegrityError
 
@@ -74,14 +75,16 @@ def populate_impact_event_database():
                     if impact_event_repository.get_impact_event_by_id(impact_event["id"]):
                         logger.info(f"Impact event ID already exists: #{impact_event['id']}")
                         continue
-                    if not asteroid_repository.get_asteroid_by_name(impact_event["des"]):
+                    asteroid_model = asteroid_repository.get_asteroid_by_name(impact_event["des"])
+                    if not asteroid_model:
                         logger.info(f"Asteroid '{impact_event['des']}' does not exist")
                         asteroid_model = get_asteroid(client=client, asteroid_name=impact_event["des"])
                         session.merge(asteroid_model)
                         session.flush()
+                    logger.info(f"Impact event '{impact_event['id']}' with asteroid '{asteroid_model.asteroid_id}' will be added to the database")
                     impact_event_model = ImpactEventModel(
                             impact_event_id=impact_event["id"],
-                            asteroid_id=asteroid_model.asteroid_id,
+                            asteroid_id=asteroid_model.asteroid_id if asteroid_model else None,
                             date=impact_event["date"],
                             impact_probability=round(float(impact_event["ip"]), 4),
                             energy=round(float(impact_event["energy"]), 4) * 1000,  # Expressed in kt
@@ -94,6 +97,12 @@ def populate_impact_event_database():
                 except IntegrityError:
                     session.rollback()
                     logger.info(f"Impact event ID already exists: #{impact_event_model.impact_event_id}")
+                except HTTPStatusError as e:
+                    logger.error(
+                        "NASA API request failed with status code {}: {}",
+                        e.response.status_code,
+                        e.response.text,
+                    )
                 except Exception as e:
                     session.rollback()
                     logger.info(f"Failed to add impact event ID #{impact_event_model.impact_event_id} due to {e}")

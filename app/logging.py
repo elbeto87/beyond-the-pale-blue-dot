@@ -4,4 +4,4 @@ from loguru import logger
 
 def setup_logging():
     logger.remove()
-    logger.add(sys.stdout, colorize=True, level="DEBUG")
+    logger.add(sys.stdout, colorize=True, level="INFO")
