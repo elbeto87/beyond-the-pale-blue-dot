@@ -11,7 +11,7 @@ class AsteroidService:
         self.asteroid_repository = asteroid_repository
 
     def get_asteroid_by_name(self, asteroid_name: str) -> AsteroidSchema:
-        logger.info(f"Getting asteroid by name: {asteroid_name}")
+        logger.info("Getting asteroid by name: {}", asteroid_name)
         asteroid = self.asteroid_repository.get_asteroid_by_name(asteroid_name)
         if not asteroid:
             raise AsteroidNotFoundException

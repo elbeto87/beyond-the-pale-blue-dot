@@ -68,20 +68,20 @@ def populate_impact_event_database():
     impact_event_repository = ImpactEventRepository(session=session)
     asteroid_repository = AsteroidRepository(session=session)
     try:
-        with httpx.Client() as client:
+        with httpx.Client(timeout=30.0) as client:
             impact_events = get_impact_event_data(client=client)
             for impact_event in impact_events:
                 try:
                     if impact_event_repository.get_impact_event_by_id(impact_event["id"]):
-                        logger.info(f"Impact event ID already exists: #{impact_event['id']}")
+                        logger.info("Impact event ID already exists: #{}", impact_event['id'])
                         continue
                     asteroid_model = asteroid_repository.get_asteroid_by_name(impact_event["des"])
                     if not asteroid_model:
-                        logger.info(f"Asteroid '{impact_event['des']}' does not exist")
+                        logger.info("Asteroid '{}' does not exist", impact_event["des"])
                         asteroid_model = get_asteroid(client=client, asteroid_name=impact_event["des"])
                         session.merge(asteroid_model)
                         session.flush()
-                    logger.info(f"Impact event '{impact_event['id']}' with asteroid '{asteroid_model.asteroid_id}' will be added to the database")
+                    logger.info("Impact event '{}' with asteroid '{}' will be added to the database", impact_event['id'], asteroid_model.asteroid_id)
                     impact_event_model = ImpactEventModel(
                             impact_event_id=impact_event["id"],
                             asteroid_id=asteroid_model.asteroid_id,
@@ -92,12 +92,12 @@ def populate_impact_event_database():
                         )
                     session.merge(impact_event_model)
                     session.commit()
-                    logger.info(f"Impact event ID has been added: #{impact_event_model.impact_event_id}")
+                    logger.info("Impact event ID has been added: #{}", impact_event_model.impact_event_id)
                     time.sleep(0.5)
                 except IntegrityError:
                     session.rollback()
                     if impact_event_model:
-                        logger.info(f"Impact event ID already exists: #{impact_event_model.impact_event_id}")
+                        logger.info("Impact event ID already exists: #{}", impact_event_model.impact_event_id)
                 except HTTPStatusError as e:
                     logger.error(
                         "NASA API request failed with status code {}: {}",
@@ -107,9 +107,9 @@ def populate_impact_event_database():
                 except Exception as e:
                     session.rollback()
                     if impact_event_model:
-                        logger.info(f"Failed to add impact event ID #{impact_event_model.impact_event_id} due to {e}")
+                        logger.info("Failed to add impact event ID #{} due to {}", impact_event_model.impact_event_id, e)
     except Exception as e:
-        logger.error(f"Failed to populate impact event database due to {e}")
+        logger.error("Failed to populate impact event database due to {}", e)
     finally:
-        logger.info(f"Populating impact event database completed.")
+        logger.info("Populating impact event database completed.")
         session.close()
