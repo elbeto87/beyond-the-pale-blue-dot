@@ -99,6 +99,7 @@ def populate_impact_event_database():
                     if impact_event_model:
                         logger.info("Impact event ID already exists: #{}", impact_event_model.impact_event_id)
                 except HTTPStatusError as e:
+                    session.rollback()
                     logger.error(
                         "NASA API request failed with status code {}: {}",
                         e.response.status_code,
