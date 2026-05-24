@@ -17,7 +17,9 @@ async def lifespan(app: FastAPI):
         replace_existing=True,
         max_instances=1,
     )
+    scheduler.start()
     yield
+    scheduler.shutdown()
 
 app = FastAPI(
     title="The end of the world",

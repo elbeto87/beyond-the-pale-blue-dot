@@ -34,6 +34,9 @@ services:
       - .env
     volumes:
       - .:/app
+    depends_on:
+      db-migrate:
+        condition: service_completed_successfully
 
 volumes:
   postgres_data:
