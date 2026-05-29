@@ -1,4 +1,5 @@
 import time
+from decimal import Decimal
 
 import httpx
 from httpx import HTTPStatusError
@@ -86,9 +87,9 @@ def populate_impact_event_database():
                             impact_event_id=impact_event["id"],
                             asteroid_id=asteroid_model.asteroid_id,
                             date=impact_event["date"],
-                            impact_probability=round(float(impact_event["ip"]), 4),
-                            energy=round(float(impact_event["energy"]), 4) * 1000,  # Expressed in kt
-                            dangerous_score=round(float(impact_event["ip"]) * float(impact_event["energy"]) * SCALE_FACTOR, 2),
+                            impact_probability=Decimal(impact_event["ip"]),
+                            energy=Decimal(impact_event["energy"]) * 1000,  # Expressed in kt
+                            dangerous_score=Decimal(impact_event["ip"]) * Decimal(impact_event["energy"]) * SCALE_FACTOR,
                         )
                     session.merge(impact_event_model)
                     session.commit()
