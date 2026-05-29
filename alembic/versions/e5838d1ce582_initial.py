@@ -35,7 +35,7 @@ def upgrade() -> None:
     sa.Column('date', sa.String(), nullable=False),
     sa.Column('impact_probability', sa.Numeric(), nullable=False),
     sa.Column('energy', sa.Numeric(precision=20, scale=2), nullable=False),
-    sa.Column('dangerous_score', sa.Numeric(), nullable=False),
+    sa.Column('dangerous_score', sa.Float(), nullable=False),
     sa.ForeignKeyConstraint(['asteroid_id'], ['asteroids.asteroid_id'], ),
     sa.PrimaryKeyConstraint('impact_event_id')
     )

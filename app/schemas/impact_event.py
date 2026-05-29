@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from datetime import date
 
 from app.schemas.asteroid import AsteroidSchema
 
@@ -7,7 +6,7 @@ from app.schemas.asteroid import AsteroidSchema
 class ImpactEventSchema(BaseModel):
     impact_event_id: str
     asteroid: AsteroidSchema
-    date: date
+    date: str
     impact_probability: float
     energy: float
     dangerous_score: float

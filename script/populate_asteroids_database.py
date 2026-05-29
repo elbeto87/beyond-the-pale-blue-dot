@@ -89,7 +89,7 @@ def populate_impact_event_database():
                             date=impact_event["date"],
                             impact_probability=Decimal(impact_event["ip"]),
                             energy=Decimal(impact_event["energy"]) * 1000,  # Expressed in kt
-                            dangerous_score=Decimal(impact_event["ip"]) * Decimal(impact_event["energy"]) * SCALE_FACTOR,
+                            dangerous_score=round(float(Decimal(impact_event["ip"]) * Decimal(impact_event["energy"]) * SCALE_FACTOR), 4),
                         )
                     session.merge(impact_event_model)
                     session.commit()
