@@ -50,6 +50,6 @@ def get_top_energy_impact_data(
         impact_event_service: ImpactEventService = Depends(get_impact_event_service),
 ) -> list[ImpactEventSchema]:
     try:
-        return impact_event_service.get_top_by_dangerous(count=count)
+        return impact_event_service.get_top_by_energy(count=count)
     except ImpactEventNotFoundException:
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Impact events not found")

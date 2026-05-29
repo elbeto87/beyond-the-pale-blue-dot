@@ -3,7 +3,6 @@ from loguru import logger
 from app.schemas.impact_event import ImpactEventSchema
 from app.repositories.impact_event import ImpactEventRepository
 from app.exceptions import ImpactEventNotFoundException
-from app.models import impact_event
 
 
 class ImpactEventService:
@@ -41,7 +40,7 @@ class ImpactEventService:
             for impact_event in impact_events
         ]
 
-    def get_top_by_dangerous(self, count: int = 10) -> list[ImpactEventSchema]:
+    def get_top_by_energy(self, count: int = 10) -> list[ImpactEventSchema]:
         logger.info("Getting top dangerous impact data for count: {}", count)
         impact_events = self.impact_event_repository.get_top_by_energy(count)
         if not impact_events:
