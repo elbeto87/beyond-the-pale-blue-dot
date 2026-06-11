@@ -1,0 +1,32 @@
+:root {
+  --bg: #05070d;
+  --panel: rgba(18, 24, 38, 0.6);
+  --border: rgba(120, 160, 220, 0.18);
+  --text: #c7d3e6;
+  --muted: #6b7a93;
+  --accent: #38e1ff;
+  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', 'SFMono-Regular', Menlo,
+    Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(1200px 800px at 70% -10%, #0b1830 0%, var(--bg) 60%);
+  color: var(--text);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+}

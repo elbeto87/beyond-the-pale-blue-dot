@@ -73,3 +73,11 @@ Thumbs.db
 
 # Private Key
 .env
+
+# Frontend stuff
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.DS_Store
