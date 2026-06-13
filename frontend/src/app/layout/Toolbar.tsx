@@ -7,7 +7,7 @@ export function Toolbar() {
 
   return (
     <header className="toolbar">
-      <span className="toolbar__brand">PROJECT&nbsp;IMPACT</span>
+      <span className="toolbar__brand">THE&nbsp;END&nbsp;OF&nbsp;THE&nbsp;WORLD</span>
       <nav className="toolbar__tabs">
         {ASTEROID_TABS.map((tab) => (
           <button

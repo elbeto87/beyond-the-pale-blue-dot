@@ -1,7 +1,7 @@
 export const ASTEROID_TABS = [
-  { id: 'large', label: '+ GRANDES' },
-  { id: 'hazardous', label: '+ PELIGROSOS' },
-  { id: 'near', label: '+ CERCANOS' },
+  { id: 'large', label: '+ BIGGEST' },
+  { id: 'hazardous', label: '+ DANGEROUS' },
+  { id: 'near', label: '+ CLOSEST' },
 ] as const;
 
 export type AsteroidCategory = (typeof ASTEROID_TABS)[number]['id'];

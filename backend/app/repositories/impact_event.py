@@ -37,8 +37,3 @@ class ImpactEventRepository:
         )
         logger.debug("Executing query to get top size impact events: {}", stmt)
         return self._session.execute(stmt).scalars().all()
-
-    def get_top_by_energy(self, count: int = 10) -> Sequence[ImpactEventModel]:
-        stmt = select(ImpactEventModel).order_by(ImpactEventModel.energy.desc()).limit(count)
-        logger.debug("Executing query to get top energy impact events: {}", stmt)
-        return self._session.execute(stmt).scalars().all()

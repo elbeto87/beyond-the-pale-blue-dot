@@ -43,13 +43,3 @@ def get_top_biggest_impact_data(
         return impact_event_service.get_top_by_size(count=count)
     except ImpactEventNotFoundException:
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Impact events not found")
-
-@router.get("/top_by_energy", response_model=list[ImpactEventSchema])
-def get_top_energy_impact_data(
-        count: int = Query(10, ge=1, description="Number of energy impact events to retrieve"),
-        impact_event_service: ImpactEventService = Depends(get_impact_event_service),
-) -> list[ImpactEventSchema]:
-    try:
-        return impact_event_service.get_top_by_energy(count=count)
-    except ImpactEventNotFoundException:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Impact events not found")

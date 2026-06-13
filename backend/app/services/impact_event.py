@@ -39,13 +39,3 @@ class ImpactEventService:
             ImpactEventSchema.model_validate(impact_event)
             for impact_event in impact_events
         ]
-
-    def get_top_by_energy(self, count: int = 10) -> list[ImpactEventSchema]:
-        logger.info("Getting top dangerous impact data for count: {}", count)
-        impact_events = self.impact_event_repository.get_top_by_energy(count)
-        if not impact_events:
-            raise ImpactEventNotFoundException
-        return [
-            ImpactEventSchema.model_validate(impact_event)
-            for impact_event in impact_events
-        ]
