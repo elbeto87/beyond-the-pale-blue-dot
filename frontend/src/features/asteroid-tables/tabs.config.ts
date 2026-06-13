@@ -1,6 +1,6 @@
 export const ASTEROID_TABS = [
-  { id: 'large', label: '+ BIGGEST' },
   { id: 'hazardous', label: '+ DANGEROUS' },
+  { id: 'large', label: '+ BIGGEST' },
   { id: 'near', label: '+ CLOSEST' },
 ] as const;
 
