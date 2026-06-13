@@ -5,6 +5,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 
 from app.api.routes import asteroid, impact_event
@@ -42,3 +43,11 @@ app = FastAPI(
 
 app.include_router(asteroid.router, prefix="/asteroid")
 app.include_router(impact_event.router, prefix="/impact_event")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # origen del frontend
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
