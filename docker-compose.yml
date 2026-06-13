@@ -11,7 +11,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres -d end_of_the_world" ]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d end_of_the_world"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -37,6 +37,18 @@ services:
     depends_on:
       db-migrate:
         condition: service_completed_successfully
+
+  frontend:                                      # <-- nuevo
+    build: frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - API_URL=http://api:8000                  # nombre del servicio en la red Docker
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules                        # preserva los node_modules del contenedor
+    depends_on:
+      - api
 
 volumes:
   postgres_data:
