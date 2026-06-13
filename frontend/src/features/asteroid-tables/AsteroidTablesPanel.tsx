@@ -7,7 +7,6 @@ export function AsteroidTablesPanel() {
   const active = useActiveCategory((s) => s.active);
   const activeLabel = ASTEROID_TABS.find((tab) => tab.id === active)?.label;
 
-  // Sin backend: lista vacía. Luego vendrá de un fetch por categoría.
   const rows: Asteroid[] = [];
 
   return (

@@ -32,7 +32,6 @@ export const RANKING_VIEWS: Record<AsteroidCategory, RankingView> = {
     metricLabel: 'Diametro (m)',
     metric: (e) => e.asteroid.estimated_diameter ?? '—',
   },
-  // OJO: no hay endpoint ni dato de distancia. Placeholder usando fecha.
   near: {
     endpoint: '/impact_event/top_by_risk',
     title: 'CLOSEST',
