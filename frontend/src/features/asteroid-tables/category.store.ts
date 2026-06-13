@@ -7,6 +7,6 @@ interface CategoryState {
 }
 
 export const useActiveCategory = create<CategoryState>((set) => ({
-  active: 'large',
+  active: 'hazardous',
   setActive: (active) => set({ active }),
 }));
