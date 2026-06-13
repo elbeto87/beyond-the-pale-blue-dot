@@ -192,3 +192,27 @@
   font-size: 12px;
   color: var(--muted);
 }
+
+.risk-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.risk-row__rank {
+  color: var(--accent);
+  font-weight: 700;
+  width: 20px;
+}
+
+.risk-row__name {
+  flex: 1;
+}
+
+.risk-row__score {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
