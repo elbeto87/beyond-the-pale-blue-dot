@@ -13,13 +13,13 @@ export function Earth() {
 
   return (
     <group>
-      {/* Planeta */}
+      {/* Planet */}
       <mesh ref={earthRef}>
         <sphereGeometry args={[2, 64, 64]} />
         <meshStandardMaterial color="#1d4e78" emissive="#0a2236" roughness={0.85} metalness={0.1} />
       </mesh>
 
-      {/* Atmósfera: esfera levemente mayor renderizada por dentro */}
+      {/* Atmosphere */}
       <mesh scale={1.08}>
         <sphereGeometry args={[2, 64, 64]} />
         <meshBasicMaterial color="#38e1ff" transparent opacity={0.12} side={BackSide} />

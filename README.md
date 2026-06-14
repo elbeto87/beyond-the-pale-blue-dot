@@ -1,4 +1,12 @@
-# The end of the world
+# The End of the World
+
+An API that calculates when the end of the world could occur, scientifically speaking.
+
+Using NASA's API [https://api.nasa.gov/](https://api.nasa.gov/), we can retrieve data about asteroids approaching Earth and calculate the most likely day of impact.
+
+This is a humorous project that demonstrates just how unlikely such an event actually is.
+
+---
 
 The end of the world es una API que devuelve cuando será el fin del mundo científicmente hablando.
 

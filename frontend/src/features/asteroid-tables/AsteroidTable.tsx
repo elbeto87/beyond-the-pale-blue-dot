@@ -5,14 +5,14 @@ interface Props {
 }
 
 const COLUMNS = [
-  { key: 'name', label: 'Nombre' },
-  { key: 'estimated_diameter', label: 'Diámetro (km)' },
-  { key: 'absolute_magnitude_h', label: 'Magnitud (H)' },
+  { key: 'name', label: 'Name' },
+  { key: 'estimated_diameter', label: 'Diameter (km)' },
+  { key: 'absolute_magnitude_h', label: 'Magnitude (H)' },
 ] as const;
 
 export function AsteroidTable({ rows }: Props) {
   if (rows.length === 0) {
-    return <div className="table__state">Sin datos todavía</div>;
+    return <div className="table__state">No data available yet.</div>;
   }
 
   return (

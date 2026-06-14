@@ -5,7 +5,7 @@ const Scene = lazy(() => import('./scene/Scene'));
 export function EarthViewer() {
   return (
     <div className="earth-viewer">
-      <Suspense fallback={<div className="earth-viewer__loading">Cargando escena…</div>}>
+      <Suspense fallback={<div className="earth-viewer__loading">Loading</div>}>
         <Scene />
       </Suspense>
       <div className="earth-viewer__hud">

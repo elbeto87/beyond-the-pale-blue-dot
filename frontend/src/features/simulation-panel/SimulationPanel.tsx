@@ -31,10 +31,10 @@ export function SimulationPanel() {
       <p className="sim-panel__subtitle">{view.subtitle}</p>
 
       <div className="sim-panel__list">
-        {loading && <span className="sim-panel__hint">Cargando...</span>}
+        {loading && <span className="sim-panel__hint">Loading...</span>}
         {error && <span className="sim-panel__hint">Error: {error}</span>}
         {!loading && !error && events.length === 0 && (
-          <span className="sim-panel__hint">Sin datos disponibles todavia.</span>
+          <span className="sim-panel__hint">No data available yet.</span>
         )}
         {events.map((event, index) => (
           <div key={event.impact_event_id} className="risk-row">
