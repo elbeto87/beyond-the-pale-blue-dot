@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useActiveCategory } from '../asteroid-tables/category.store';
 import { RANKING_VIEWS, type ImpactEvent } from './views.config';
+import {API_CONFIG} from "../../shared/api/config.ts";
 
 const API_BASE = API_CONFIG.baseUrl;
 
