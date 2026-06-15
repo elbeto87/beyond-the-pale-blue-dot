@@ -39,7 +39,7 @@ export const RANKING_VIEWS: Record<AsteroidCategory, RankingView> = {
     metric2: (e) => e.date,
   },
   near: {
-    endpoint: '/impact_event/top_by_risk',
+    endpoint: '/impact_event/top_by_probability',
     title: 'HIGHEST PROBABILITY',
     subtitle: 'The impact events with the highest probability of occurring, regardless of their potential impact severity.',
     metricLabel: 'Probability (%)',

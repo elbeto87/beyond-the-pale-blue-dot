@@ -24,7 +24,7 @@ class ImpactEventRepository:
         return self._session.execute(stmt).scalars().all()
 
     def get_top_by_probability(self, count: int = 10) -> Sequence[ImpactEventModel]:
-        stmt = select(ImpactEventModel).order_by(AsteroidModel.estimated_diameter.desc()).limit(count)
+        stmt = select(ImpactEventModel).order_by(AsteroidModel.impact_probability.desc()).limit(count)
         logger.debug("Executing query to get top probability impact events: {}", stmt)
         return self._session.execute(stmt).scalars().all()
 
