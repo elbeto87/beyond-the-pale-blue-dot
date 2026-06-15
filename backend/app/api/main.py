@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 
 from app.api.routes import asteroid, impact_event
+from app.config import settings
 from app.logging import setup_logging
 from script.populate_asteroids_database import populate_impact_event_database
 
