@@ -31,7 +31,7 @@ export const RANKING_VIEWS: Record<AsteroidCategory, RankingView> = {
   },
   large: {
     endpoint: '/impact_event/top_by_biggest',
-    title: 'LARGEST',
+    title: 'BIGGEST',
     subtitle: 'The impact events that involve the largest asteroids, measured by their estimated diameter.',
     metricLabel: 'Diameter (m)',
     metric: (e) => (e.asteroid.estimated_diameter ?? '—') + 'km',
@@ -40,7 +40,7 @@ export const RANKING_VIEWS: Record<AsteroidCategory, RankingView> = {
   },
   near: {
     endpoint: '/impact_event/top_by_probability',
-    title: 'HIGHEST PROBABILITY',
+    title: 'MOST LIKELY',
     subtitle: 'The impact events with the highest probability of occurring, regardless of their potential impact severity.',
     metricLabel: 'Probability (%)',
     metric: (e) => (e.impact_probability * 100).toFixed(6) + '%',
