@@ -115,3 +115,4 @@ def populate_impact_event_database():
     finally:
         logger.info("Populating impact event database completed.")
         session.close()
+

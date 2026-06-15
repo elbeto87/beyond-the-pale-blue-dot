@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     NASA_NEO_WS_BASE_URL: str = "https://api.nasa.gov/neo/rest/v1/neo"
     NASA_API_KEY: str = "DEMO_KEY"
     DATABASE_URL: str
+    PORT: int = 8000
+    HOST: str = "0.0.0.0"
 
     model_config = SettingsConfigDict(env_file=".env")
 
