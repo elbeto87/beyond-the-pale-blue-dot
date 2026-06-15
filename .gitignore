@@ -81,3 +81,6 @@ dist-ssr
 *.local
 .env
 .DS_Store
+
+# GithubCopilot instructions
+.github/copilot-instructions.md
