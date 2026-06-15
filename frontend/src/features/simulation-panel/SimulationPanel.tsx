@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useActiveCategory } from '../asteroid-tables/category.store';
 import { RANKING_VIEWS, type ImpactEvent } from './views.config';
 
-const API_BASE = '';
+const API_BASE = API_CONFIG.baseUrl;
 
 export function SimulationPanel() {
   const active = useActiveCategory((s) => s.active);
