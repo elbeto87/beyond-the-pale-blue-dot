@@ -3,4 +3,8 @@ export interface Asteroid {
   name: string;
   estimated_diameter: number | null;
   absolute_magnitude_h: number | null;
+  albedo: number | null;
+  spectral_type: string | null;
+  rotation_period_hours: number | null;
+  extent: string | null;
 }

@@ -71,17 +71,17 @@
   overflow-y: auto;
 }
 
-/* ===== Earth viewer (canvas R3F) ===== */
-.earth-viewer {
+/* ===== Asteroid viewer (canvas R3F) ===== */
+.asteroid-viewer {
   position: absolute;
   inset: 0;
 }
 
-.earth-viewer canvas {
+.asteroid-viewer canvas {
   display: block;
 }
 
-.earth-viewer__loading {
+.asteroid-viewer__loading {
   position: absolute;
   inset: 0;
   display: flex;
@@ -92,7 +92,7 @@
   letter-spacing: 2px;
 }
 
-.earth-viewer__hud {
+.asteroid-viewer__hud {
   position: absolute;
   top: 16px;
   left: 16px;
@@ -105,7 +105,7 @@
   pointer-events: none;
 }
 
-.earth-viewer__hud-dot {
+.asteroid-viewer__hud-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -155,6 +155,19 @@
   color: var(--muted);
   font-weight: 500;
   letter-spacing: 1px;
+}
+
+.table__row {
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.table__row:hover {
+  background: rgba(56, 225, 255, 0.06);
+}
+
+.table__row.is-selected {
+  background: rgba(56, 225, 255, 0.12);
 }
 
 .table__state {

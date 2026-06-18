@@ -2,6 +2,8 @@ import type { Asteroid } from '../../shared/api/types';
 
 interface Props {
   rows: Asteroid[];
+  selectedId?: string | null;
+  onSelect?: (asteroid: Asteroid) => void;
 }
 
 const COLUMNS = [
@@ -10,7 +12,7 @@ const COLUMNS = [
   { key: 'absolute_magnitude_h', label: 'Magnitude (H)' },
 ] as const;
 
-export function AsteroidTable({ rows }: Props) {
+export function AsteroidTable({ rows, selectedId, onSelect }: Props) {
   if (rows.length === 0) {
     return <div className="table__state">No data available yet.</div>;
   }
@@ -26,7 +28,11 @@ export function AsteroidTable({ rows }: Props) {
       </thead>
       <tbody>
         {rows.map((asteroid) => (
-          <tr key={asteroid.asteroid_id}>
+          <tr
+            key={asteroid.asteroid_id}
+            className={`table__row${asteroid.asteroid_id === selectedId ? ' is-selected' : ''}`}
+            onClick={() => onSelect?.(asteroid)}
+          >
             {COLUMNS.map((column) => (
               <td key={column.key}>{String(asteroid[column.key] ?? '—')}</td>
             ))}

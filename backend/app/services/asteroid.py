@@ -16,3 +16,9 @@ class AsteroidService:
         if not asteroid:
             raise AsteroidNotFoundException
         return AsteroidSchema.model_validate(asteroid)
+
+    def get_all(self, count: int = 100) -> list[AsteroidSchema]:
+        logger.info("Getting all asteroids with count: {}", count)
+        asteroids = self.asteroid_repository.get_all(count)
+        return [AsteroidSchema.model_validate(asteroid) for asteroid in asteroids]
+

@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 
 from app.api.dependencies import get_asteroid_service
 from app.schemas.asteroid import AsteroidSchema
@@ -10,6 +10,14 @@ from app.exceptions import AsteroidNotFoundException
 router = APIRouter(
     tags=["asteroid"],
 )
+
+
+@router.get("", response_model=list[AsteroidSchema])
+def get_asteroids(
+        count: int = Query(100, ge=1, le=500, description="Number of asteroids to retrieve"),
+        asteroid_service: AsteroidService = Depends(get_asteroid_service),
+) -> list[AsteroidSchema]:
+    return asteroid_service.get_all(count=count)
 
 
 @router.get("/{asteroid_name}")

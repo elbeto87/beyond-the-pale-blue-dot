@@ -1,5 +1,5 @@
 import { Toolbar } from './Toolbar';
-import { EarthViewer } from '../../features/viewer/EarthViewer';
+import { AsteroidViewer } from '../../features/viewer/AsteroidViewer';
 import { AsteroidTablesPanel } from '../../features/asteroid-tables/AsteroidTablesPanel';
 import { SimulationPanel } from '../../features/simulation-panel/SimulationPanel';
 
@@ -9,7 +9,7 @@ export function AppShell() {
       <Toolbar />
       <main className="app-shell__body">
         <section className="app-shell__viewer">
-          <EarthViewer />
+          <AsteroidViewer />
           <AsteroidTablesPanel />
         </section>
         <aside className="app-shell__sidebar">
