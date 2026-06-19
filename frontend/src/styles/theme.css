@@ -21,7 +21,7 @@ body,
 
 body {
   margin: 0;
-  background: radial-gradient(1200px 800px at 70% -10%, #0b1830 0%, var(--bg) 60%);
+  background: radial-gradient(1200px 800px at 50% -10%, #0b1830 0%, var(--bg) 60%);
   color: var(--text);
   font-family: var(--font-mono);
   -webkit-font-smoothing: antialiased;
