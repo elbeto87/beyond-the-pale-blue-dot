@@ -13,6 +13,7 @@ export default function Scene() {
       <OrbitControls
         enablePan={false}
         enableZoom={false}
+        enableRotate={false}
         autoRotate
         autoRotateSpeed={0.3}
       />

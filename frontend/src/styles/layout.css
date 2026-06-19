@@ -1,7 +1,25 @@
+/* ===== Starfield background (global, behind everything) ===== */
+.starfield-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.starfield-background canvas {
+  display: block;
+}
+
 .app-shell {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   height: 100vh;
+  max-width: 1280px;
+  margin: 0 auto;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
 }
 
 /* ===== Toolbar ===== */
@@ -71,25 +89,10 @@
   overflow-y: auto;
 }
 
-/* ===== Asteroid viewer (canvas R3F) ===== */
+/* ===== Asteroid viewer (impact event area) ===== */
 .asteroid-viewer {
   position: absolute;
   inset: 0;
-}
-
-.asteroid-viewer canvas {
-  display: block;
-}
-
-.asteroid-viewer__loading {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--muted);
-  font-size: 13px;
-  letter-spacing: 2px;
 }
 
 /* ===== Impact event detail card (data sheet) ===== */
@@ -242,4 +245,54 @@
 .risk-row__score {
   color: var(--muted);
   font-variant-numeric: tabular-nums;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .app-shell {
+    height: auto;
+    min-height: 100vh;
+    max-width: 100%;
+    border-left: none;
+    border-right: none;
+  }
+
+  .app-shell__body {
+    grid-template-columns: 1fr;
+  }
+
+  .app-shell__sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .app-shell__viewer {
+    min-height: 70vh;
+  }
+}
+
+@media (max-width: 600px) {
+  .toolbar {
+    flex-wrap: wrap;
+    height: auto;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .toolbar__tabs {
+    flex-wrap: wrap;
+  }
+
+  .detail-card {
+    width: 100%;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 22px 20px;
+  }
+
+  .detail-card__name {
+    font-size: 22px;
+  }
 }
