@@ -77,7 +77,6 @@ def populate_impact_event_database():
                 try:
                     if impact_event_repository.get_impact_event_by_id(impact_event["id"]):
                         logger.info("Impact event ID already exists: #{}", impact_event['id'])
-                        continue
                     asteroid_model = asteroid_repository.get_asteroid_by_name(impact_event["des"])
                     if not asteroid_model:
                         logger.info("Asteroid '{}' does not exist", impact_event["des"])
@@ -118,3 +117,6 @@ def populate_impact_event_database():
         logger.info("Populating impact event database completed.")
         session.close()
 
+
+if __name__ == "__main__":
+    populate_impact_event_database()
