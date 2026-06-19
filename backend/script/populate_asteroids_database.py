@@ -76,13 +76,12 @@ def populate_impact_event_database():
             for impact_event in impact_events:
                 try:
                     if impact_event_repository.get_impact_event_by_id(impact_event["id"]):
-                        logger.info("Impact event ID already exists: #{}", impact_event['id'])
-                    asteroid_model = asteroid_repository.get_asteroid_by_name(impact_event["des"])
-                    if not asteroid_model:
-                        logger.info("Asteroid '{}' does not exist", impact_event["des"])
-                        asteroid_model = get_asteroid(client=client, asteroid_name=impact_event["des"])
-                        session.merge(asteroid_model)
-                        session.flush()
+                        logger.info("Impact event ID already exists, will update: #{}", impact_event['id'])
+                    logger.info("Fetching asteroid '{}' from NASA API", impact_event["des"])
+                    asteroid_model = get_asteroid(client=client, asteroid_name=impact_event["des"])
+                    session.merge(asteroid_model)
+                    logger.info("Asteroid '{}' merged (created/updated)", asteroid_model.asteroid_id)
+                    session.flush()
                     logger.info("Impact event '{}' with asteroid '{}' will be added to the database", impact_event['id'], asteroid_model.asteroid_id)
                     impact_event_model = ImpactEventModel(
                             impact_event_id=impact_event["id"],
@@ -94,7 +93,7 @@ def populate_impact_event_database():
                         )
                     session.merge(impact_event_model)
                     session.commit()
-                    logger.info("Impact event ID has been added: #{}", impact_event_model.impact_event_id)
+                    logger.info("Impact event ID merged (created/updated): #{}", impact_event_model.impact_event_id)
                     time.sleep(0.5)
                 except IntegrityError:
                     session.rollback()
