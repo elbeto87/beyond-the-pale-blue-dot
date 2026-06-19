@@ -19,6 +19,8 @@ services:
   db-migrate:
     build: backend
     command: alembic upgrade head
+    volumes:
+      - ./backend:/app
     depends_on:
       db:
         condition: service_healthy
