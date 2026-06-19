@@ -26,7 +26,7 @@ export const RANKING_VIEWS: Record<AsteroidCategory, RankingView> = {
     title: 'BIGGEST',
     subtitle: 'The impact events that involve the largest asteroids, measured by their estimated diameter.',
     metricLabel: 'Diameter (m)',
-    metric: (e) => (e.asteroid.estimated_diameter ?? '—') + 'km',
+    metric: (e) => (e.asteroid.estimated_diameter ?? '—') + 'm',
     metricLabel2: 'Impact Date',
     metric2: (e) => e.date,
   },
