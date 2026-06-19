@@ -74,7 +74,7 @@
 /* ===== Body grid ===== */
 .app-shell__body {
   display: grid;
-  grid-template-columns: 380px 1fr;
+  grid-template-columns: 460px 1fr;
   flex: 1;
   min-height: 0;
 }
@@ -199,7 +199,8 @@
 }
 
 .risk-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 22px 1fr 80px 108px;
   align-items: center;
   gap: 10px;
   width: 100%;
@@ -226,16 +227,25 @@
 .risk-row__rank {
   color: var(--accent);
   font-weight: 700;
-  width: 20px;
 }
 
 .risk-row__name {
-  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .risk-row__score {
   color: var(--muted);
   font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.risk-row__date {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  font-size: 12px;
 }
 
 /* ===== Responsive ===== */

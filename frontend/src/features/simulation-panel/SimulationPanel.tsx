@@ -51,6 +51,7 @@ export function SimulationPanel() {
             <span className="risk-row__rank">{index + 1}</span>
             <span className="risk-row__name">{event.asteroid.name}</span>
             <span className="risk-row__score">{view.metric(event)}</span>
+            <span className="risk-row__date">{view.metric2(event)}</span>
           </button>
         ))}
       </div>
