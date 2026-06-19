@@ -7,6 +7,7 @@ interface DetailRow {
 }
 
 const DETAIL_ROWS: DetailRow[] = [
+  { label: 'Asteroid name', value: (e) => e.asteroid.name },
   { label: 'Impact date', value: (e) => e.date },
   { label: 'Probability', value: (e) => `${(e.impact_probability * 100).toFixed(6)} %` },
   { label: 'Energy', value: (e) => `${e.energy.toLocaleString()} kt` },
@@ -20,7 +21,6 @@ const DETAIL_ROWS: DetailRow[] = [
     label: 'Magnitude (H)',
     value: (e) => (e.asteroid.absolute_magnitude_h != null ? e.asteroid.absolute_magnitude_h.toString() : '—'),
   },
-  { label: 'Event ID', value: (e) => e.impact_event_id },
 ];
 
 export function ImpactEventDetailCard() {
@@ -38,7 +38,7 @@ export function ImpactEventDetailCard() {
     <div className="detail-card">
       <div className="detail-card__header">
         <span className="detail-card__eyebrow">IMPACT EVENT</span>
-        <h3 className="detail-card__name">{selected.asteroid.name}</h3>
+        <h3 className="detail-card__name">{selected.impact_event_id}</h3>
       </div>
       <dl className="detail-card__grid">
         {DETAIL_ROWS.map((row) => (
