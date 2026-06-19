@@ -15,11 +15,14 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  max-width: 1280px;
-  margin: 0 auto;
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
+  width: min(1280px, calc(100% - 64px));
+  height: calc(100vh - 64px);
+  margin: 32px auto;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(8, 12, 22, 0.55);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
 }
 
 /* ===== Toolbar ===== */
@@ -30,8 +33,6 @@
   height: 56px;
   padding: 0 20px;
   border-bottom: 1px solid var(--border);
-  background: rgba(5, 7, 13, 0.7);
-  backdrop-filter: blur(8px);
   z-index: 10;
 }
 
@@ -85,7 +86,6 @@
 
 .app-shell__sidebar {
   border-right: 1px solid var(--border);
-  background: rgba(5, 7, 13, 0.45);
   overflow-y: auto;
 }
 
@@ -98,17 +98,8 @@
 /* ===== Impact event detail card (data sheet) ===== */
 .detail-card {
   position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: min(460px, 75%);
+  inset: 0;
   padding: 30px 32px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-left: none;
-  border-radius: 0 16px 16px 0;
-  backdrop-filter: blur(10px);
-  box-shadow: 24px 0 60px rgba(0, 0, 0, 0.35);
   z-index: 6;
   overflow-y: auto;
   display: flex;
@@ -250,11 +241,10 @@
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
   .app-shell {
+    width: calc(100% - 24px);
     height: auto;
-    min-height: 100vh;
-    max-width: 100%;
-    border-left: none;
-    border-right: none;
+    min-height: calc(100vh - 24px);
+    margin: 12px auto;
   }
 
   .app-shell__body {
@@ -267,7 +257,7 @@
   }
 
   .app-shell__viewer {
-    min-height: 70vh;
+    min-height: 60vh;
   }
 }
 
@@ -284,11 +274,6 @@
   }
 
   .detail-card {
-    width: 100%;
-    border-left: none;
-    border-right: none;
-    border-radius: 0;
-    box-shadow: none;
     padding: 22px 20px;
   }
 
