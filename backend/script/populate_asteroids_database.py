@@ -33,7 +33,7 @@ def get_asteroid_basic_data(client: httpx.Client, asteroid_name: str) -> dict:
 
 
 
-def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-7"):
+def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-7") -> list[dict]:
     params = {
         "all": 1,
         "ip-min": impact_probability,
@@ -90,8 +90,6 @@ def populate_impact_event_database():
                     session.commit()
                     logger.info("Impact event ID merged (created/updated): #{}", impact_event_model.impact_event_id)
                     time.sleep(0.5)
-                except IntegrityError:
-                    session.rollback()
                 except HTTPStatusError as e:
                     session.rollback()
                     logger.error(
