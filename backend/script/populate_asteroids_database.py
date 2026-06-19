@@ -33,7 +33,7 @@ def get_asteroid_basic_data(client: httpx.Client, asteroid_name: str) -> dict:
 
 
 
-def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-8") -> list[dict]:
+def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-7") -> list[dict]:
     params = {
         "all": 1,
         "ip-min": impact_probability,
@@ -41,6 +41,7 @@ def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-8"
     response = client.get(settings.NASA_JPL_SENTRY_BASE_URL, params=params)
     response.raise_for_status()
     return response.json()["data"]
+
 
 def get_asteroid(client: httpx.Client, asteroid_name: str) -> AsteroidModel:
     asteroid_basic_data = get_asteroid_basic_data(
@@ -99,7 +100,7 @@ def populate_impact_event_database():
                     )
                 except Exception as e:
                     session.rollback()
-                    logger.error("Failed to process impact event", e)
+                    logger.error("Failed to process impact event '{}' due to {}", impact_event.get("id", "unknown"), e)
     except Exception as e:
         logger.error("Failed to populate impact event database due to {}", e)
     finally:
