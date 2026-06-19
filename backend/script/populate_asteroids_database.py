@@ -28,38 +28,12 @@ def get_asteroid_physical_data(client: httpx.Client, asteroid_id: str) -> dict:
 def get_asteroid_basic_data(client: httpx.Client, asteroid_name: str) -> dict:
     params = {
         "des": asteroid_name,
-        "phys-par": 1,
     }
     response = client.get(settings.NASA_JPL_SBDB_BASE_URL, params=params)
     response.raise_for_status()
     return response.json()
 
 
-def _safe_float(value: str | None) -> float | None:
-    if value is None:
-        return None
-    try:
-        return float(value)
-    except ValueError:
-        return None
-
-
-def _parse_physical_parameters(phys_par: list[dict]) -> dict:
-    field_by_name = {
-        "albedo": "albedo",
-        "spec_B": "spectral_type",
-        "rot_per": "rotation_period_hours",
-        "extent": "extent",
-    }
-    numeric_fields = {"albedo", "rotation_period_hours"}
-    parsed: dict = {field: None for field in field_by_name.values()}
-    for param in phys_par:
-        field = field_by_name.get(param.get("name"))
-        if field is None:
-            continue
-        value = param.get("value")
-        parsed[field] = _safe_float(value) if field in numeric_fields else value
-    return parsed
 
 def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-5"):
     params = {
@@ -76,7 +50,6 @@ def get_asteroid(client: httpx.Client, asteroid_name: str) -> AsteroidModel:
         asteroid_name=asteroid_name,
     )
     asteroid_object = asteroid_basic_data["object"]
-    physical_parameters = _parse_physical_parameters(asteroid_basic_data.get("phys_par", []))
     asteroid_physical_data = get_asteroid_physical_data(
         client=client,
         asteroid_id=asteroid_object["spkid"],
@@ -90,10 +63,6 @@ def get_asteroid(client: httpx.Client, asteroid_name: str) -> AsteroidModel:
         name=asteroid_object["des"],
         estimated_diameter=asteroid_diameter_aprox,
         absolute_magnitude_h=asteroid_physical_data["absolute_magnitude_h"],
-        albedo=physical_parameters["albedo"],
-        spectral_type=physical_parameters["spectral_type"],
-        rotation_period_hours=physical_parameters["rotation_period_hours"],
-        extent=physical_parameters["extent"],
     )
 
 

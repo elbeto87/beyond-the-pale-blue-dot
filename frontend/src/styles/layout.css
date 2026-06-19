@@ -55,7 +55,7 @@
 /* ===== Body grid ===== */
 .app-shell__body {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 380px 1fr;
   flex: 1;
   min-height: 0;
 }
@@ -66,7 +66,7 @@
 }
 
 .app-shell__sidebar {
-  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
   background: rgba(5, 7, 13, 0.45);
   overflow-y: auto;
 }
@@ -92,89 +92,75 @@
   letter-spacing: 2px;
 }
 
-.asteroid-viewer__hud {
+/* ===== Asteroid detail card (data sheet) ===== */
+.detail-card {
   position: absolute;
   top: 16px;
-  left: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: var(--muted);
-  pointer-events: none;
-}
-
-.asteroid-viewer__hud-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 10px var(--accent);
-}
-
-/* ===== Tables panel (overlay sobre el visor) ===== */
-.tables-panel {
-  position: absolute;
-  left: 16px;
-  bottom: 16px;
-  width: min(560px, calc(100% - 32px));
-  padding: 14px 16px;
+  right: 16px;
+  width: min(320px, calc(100% - 32px));
+  padding: 16px 18px;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 10px;
   backdrop-filter: blur(6px);
-  z-index: 5;
+  z-index: 6;
 }
 
-.tables-panel__header {
-  margin-bottom: 10px;
+.detail-card--empty {
+  color: var(--muted);
 }
 
-.tables-panel__title {
-  font-size: 13px;
+.detail-card__hint {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+
+.detail-card__header {
+  margin-bottom: 14px;
+}
+
+.detail-card__eyebrow {
+  font-size: 11px;
   letter-spacing: 2px;
+  color: var(--muted);
+}
+
+.detail-card__name {
+  margin: 4px 0 0;
+  font-size: 18px;
+  letter-spacing: 1px;
   color: var(--accent);
 }
 
-/* ===== Table ===== */
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
+.detail-card__grid {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.table th,
-.table td {
-  text-align: left;
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--border);
+.detail-card__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
 }
 
-.table th {
-  color: var(--muted);
-  font-weight: 500;
+.detail-card__label {
+  font-size: 12px;
   letter-spacing: 1px;
-}
-
-.table__row {
-  cursor: pointer;
-  transition: background 0.15s ease;
-}
-
-.table__row:hover {
-  background: rgba(56, 225, 255, 0.06);
-}
-
-.table__row.is-selected {
-  background: rgba(56, 225, 255, 0.12);
-}
-
-.table__state {
-  padding: 18px 4px;
   color: var(--muted);
-  font-size: 13px;
 }
+
+.detail-card__value {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
 
 /* ===== Simulation panel ===== */
 .sim-panel {
@@ -210,9 +196,25 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
   padding: 8px 10px;
   border: 1px solid var(--border);
   border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.risk-row:hover {
+  background: rgba(56, 225, 255, 0.06);
+}
+
+.risk-row.is-selected {
+  background: rgba(56, 225, 255, 0.12);
+  border-color: var(--accent);
 }
 
 .risk-row__rank {

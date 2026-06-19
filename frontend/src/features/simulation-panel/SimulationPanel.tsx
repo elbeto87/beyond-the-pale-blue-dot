@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useActiveCategory } from '../asteroid-tables/category.store';
-import { RANKING_VIEWS, type ImpactEvent } from './views.config';
+import { RANKING_VIEWS } from './views.config';
+import { useSelectedImpactEvent } from '../viewer/selectedImpactEvent.store';
+import type { ImpactEvent } from '../../shared/api/types';
 import {API_CONFIG} from "../../shared/api/config";
 
 const API_BASE = API_CONFIG.baseUrl;
@@ -8,6 +10,8 @@ const API_BASE = API_CONFIG.baseUrl;
 export function SimulationPanel() {
   const active = useActiveCategory((s) => s.active);
   const view = RANKING_VIEWS[active];
+  const selected = useSelectedImpactEvent((s) => s.selected);
+  const setSelected = useSelectedImpactEvent((s) => s.setSelected);
 
   const [events, setEvents] = useState<ImpactEvent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,11 +42,16 @@ export function SimulationPanel() {
           <span className="sim-panel__hint">No data available yet.</span>
         )}
         {events.map((event, index) => (
-          <div key={event.impact_event_id} className="risk-row">
+          <button
+            key={event.impact_event_id}
+            type="button"
+            className={`risk-row${event.impact_event_id === selected?.impact_event_id ? ' is-selected' : ''}`}
+            onClick={() => setSelected(event)}
+          >
             <span className="risk-row__rank">{index + 1}</span>
             <span className="risk-row__name">{event.asteroid.name}</span>
             <span className="risk-row__score">{view.metric(event)}</span>
-          </div>
+          </button>
         ))}
       </div>
     </div>

@@ -1,13 +1,5 @@
 import type { AsteroidCategory } from '../asteroid-tables/tabs.config';
-
-export interface ImpactEvent {
-  impact_event_id: string;
-  asteroid: { asteroid_id: string; name: string; estimated_diameter: number | null };
-  date: string;
-  impact_probability: number;
-  energy: number;
-  dangerous_score: number;
-}
+import type { ImpactEvent } from '../../shared/api/types';
 
 export interface RankingView {
   endpoint: string;
