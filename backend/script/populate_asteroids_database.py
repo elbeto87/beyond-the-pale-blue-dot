@@ -33,7 +33,7 @@ def get_asteroid_basic_data(client: httpx.Client, asteroid_name: str) -> dict:
 
 
 
-def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-7") -> list[dict]:
+def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-8") -> list[dict]:
     params = {
         "all": 1,
         "ip-min": impact_probability,
