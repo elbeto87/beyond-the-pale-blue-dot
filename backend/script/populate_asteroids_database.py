@@ -10,8 +10,6 @@ from app.config import settings
 from app.database import SessionLocal
 from app.models.asteroid import AsteroidModel
 from app.models.impact_event import ImpactEventModel
-from app.repositories.asteroid import AsteroidRepository
-from app.repositories.impact_event import ImpactEventRepository
 
 
 SCALE_FACTOR = 1_000_000
@@ -68,15 +66,12 @@ def get_asteroid(client: httpx.Client, asteroid_name: str) -> AsteroidModel:
 
 def populate_impact_event_database():
     session = SessionLocal()
-    impact_event_repository = ImpactEventRepository(session=session)
-    asteroid_repository = AsteroidRepository(session=session)
     try:
         with httpx.Client(timeout=30.0) as client:
             impact_events = get_impact_event_data(client=client)
             for impact_event in impact_events:
+                impact_event_model = None
                 try:
-                    if impact_event_repository.get_impact_event_by_id(impact_event["id"]):
-                        logger.info("Impact event ID already exists, will update: #{}", impact_event['id'])
                     logger.info("Fetching asteroid '{}' from NASA API", impact_event["des"])
                     asteroid_model = get_asteroid(client=client, asteroid_name=impact_event["des"])
                     session.merge(asteroid_model)
@@ -97,8 +92,6 @@ def populate_impact_event_database():
                     time.sleep(0.5)
                 except IntegrityError:
                     session.rollback()
-                    if impact_event_model:
-                        logger.info("Impact event ID already exists: #{}", impact_event_model.impact_event_id)
                 except HTTPStatusError as e:
                     session.rollback()
                     logger.error(
@@ -108,8 +101,7 @@ def populate_impact_event_database():
                     )
                 except Exception as e:
                     session.rollback()
-                    if impact_event_model:
-                        logger.info("Failed to add impact event ID #{} due to {}", impact_event_model.impact_event_id, e)
+                    logger.error("Failed to process impact event", e)
     except Exception as e:
         logger.error("Failed to populate impact event database due to {}", e)
     finally:
