@@ -19,7 +19,7 @@ const DETAIL_ROWS: DetailRow[] = [
   },
   {
     label: 'Magnitude (H)',
-    value: (e) => (e.asteroid.absolute_magnitude_h != null ? e.asteroid.absolute_magnitude_h.toString() : '—'),
+    value: (e) => (e.asteroid.absolute_magnitude_h != null ? `${e.asteroid.absolute_magnitude_h.toString()} H` : '—'),
   },
 ];
 
