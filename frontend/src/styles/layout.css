@@ -74,7 +74,7 @@
 /* ===== Body grid ===== */
 .app-shell__body {
   display: grid;
-  grid-template-columns: 460px 1fr;
+  grid-template-columns: 480px 1fr;
   flex: 1;
   min-height: 0;
 }
@@ -198,11 +198,29 @@
   color: var(--muted);
 }
 
+.risk-head {
+  display: grid;
+  grid-template-columns: 24px 1fr 120px 112px;
+  column-gap: 16px;
+  align-items: center;
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.risk-head__score,
+.risk-head__date {
+  text-align: right;
+}
+
 .risk-row {
   display: grid;
-  grid-template-columns: 22px 1fr 80px 108px;
+  grid-template-columns: 24px 1fr 120px 112px;
   align-items: center;
-  gap: 10px;
+  column-gap: 16px;
   width: 100%;
   padding: 8px 10px;
   border: 1px solid var(--border);
@@ -272,6 +290,17 @@
 }
 
 @media (max-width: 600px) {
+  .risk-row,
+  .risk-head {
+    grid-template-columns: 20px minmax(0, 1fr) 72px 92px;
+    column-gap: 10px;
+  }
+
+  .risk-head {
+    font-size: 10px;
+    letter-spacing: 0;
+  }
+
   .toolbar {
     flex-wrap: wrap;
     height: auto;

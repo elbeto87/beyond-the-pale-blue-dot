@@ -41,6 +41,14 @@ export function SimulationPanel() {
         {!loading && !error && events.length === 0 && (
           <span className="sim-panel__hint">No data available yet.</span>
         )}
+        {!loading && !error && events.length > 0 && (
+          <div className="risk-head">
+            <span className="risk-head__rank" />
+            <span className="risk-head__name">Impact Event</span>
+            <span className="risk-head__score">{view.metricLabel}</span>
+            <span className="risk-head__date">{view.metricLabel2}</span>
+          </div>
+        )}
         {events.map((event, index) => (
           <button
             key={event.impact_event_id}
