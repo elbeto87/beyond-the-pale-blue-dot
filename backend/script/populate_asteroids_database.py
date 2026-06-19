@@ -42,7 +42,6 @@ def get_impact_event_data(client: httpx.Client, impact_probability: str = "1e-7"
     response.raise_for_status()
     return response.json()["data"]
 
-
 def get_asteroid(client: httpx.Client, asteroid_name: str) -> AsteroidModel:
     asteroid_basic_data = get_asteroid_basic_data(
         client=client,
@@ -100,7 +99,7 @@ def populate_impact_event_database():
                     )
                 except Exception as e:
                     session.rollback()
-                    logger.error("Failed to process impact event '{}' due to {}", impact_event.get("id", "unknown"), e)
+                    logger.error("Failed to process impact event", e)
     except Exception as e:
         logger.error("Failed to populate impact event database due to {}", e)
     finally:
