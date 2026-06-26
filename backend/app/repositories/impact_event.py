@@ -9,8 +9,6 @@ from sqlalchemy.orm import Session
 from app.models.impact_event import ImpactEventModel
 from app.models.asteroid import AsteroidModel
 
-from backend.app.models.impact_event import ImpactEventModel
-
 
 class ImpactEventRepository:
 
