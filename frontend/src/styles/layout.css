@@ -174,7 +174,7 @@
 }
 
 .sim-panel__title {
-  margin: 0 0 6px;
+  margin: 0;
   font-size: 15px;
   letter-spacing: 3px;
   color: var(--accent);
@@ -319,4 +319,53 @@
   .detail-card__name {
     font-size: 22px;
   }
+}
+
+.sim-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.year-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.year-select__label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+}
+
+.year-select__field {
+  appearance: none;
+  background: var(--panel)
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M1 3l4 4 4-4' fill='none' stroke='%236b7a93' stroke-width='1.5'/></svg>")
+    no-repeat right 10px center;
+  background-size: 10px;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 28px 6px 12px;
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.year-select__field:hover,
+.year-select__field:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 18px rgba(56, 225, 255, 0.12);
+  outline: none;
+}
+
+.year-select__field option {
+  background: #0b1320;
+  color: var(--text);
 }

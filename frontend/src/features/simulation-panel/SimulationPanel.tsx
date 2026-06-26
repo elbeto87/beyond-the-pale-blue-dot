@@ -4,6 +4,7 @@ import { RANKING_VIEWS } from './views.config';
 import { useSelectedImpactEvent } from '../viewer/selectedImpactEvent.store';
 import type { ImpactEvent } from '../../shared/api/types';
 import {API_CONFIG} from "../../shared/api/config";
+import {YearRangeSelect} from "./YearRangeSelect.tsx";
 
 const API_BASE = API_CONFIG.baseUrl;
 
@@ -32,7 +33,10 @@ export function SimulationPanel() {
 
   return (
     <div className="sim-panel">
-      <h2 className="sim-panel__title">{view.title}</h2>
+      <div className="sim-panel__head">
+        <h2 className="sim-panel__title">{view.title}</h2>
+        <YearRangeSelect />
+      </div>
       <p className="sim-panel__subtitle">{view.subtitle}</p>
 
       <div className="sim-panel__list">
