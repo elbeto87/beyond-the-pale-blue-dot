@@ -30,7 +30,8 @@ class ImpactEventRepository:
             .limit(count)
         )
         logger.debug("Executing query to get top risk impact events: {}", stmt)
-        return self._session.execute(stmt).scalars().all()
+        events = self._session.execute(stmt).scalars().all()
+        return sorted(events, key=lambda e: e.date)
 
     def get_top_by_probability(self, count: int = 10, time_range: int = 100) -> Sequence[ImpactEventModel]:
         today = date.today().isoformat()  # "2026-06-26"
@@ -42,7 +43,8 @@ class ImpactEventRepository:
             .limit(count)
         )
         logger.debug("Executing query to get top probability impact events: {}", stmt)
-        return self._session.execute(stmt).scalars().all()
+        events = self._session.execute(stmt).scalars().all()
+        return sorted(events, key=lambda e: e.date)
 
     def get_top_by_size(self, count: int = 10, time_range: int = 100) -> Sequence[ImpactEventModel]:
         today = date.today().isoformat()  # "2026-06-26"
@@ -56,4 +58,5 @@ class ImpactEventRepository:
             .limit(count)
         )
         logger.debug("Executing query to get top size impact events: {}", stmt)
-        return self._session.execute(stmt).scalars().all()
+        events = self._session.execute(stmt).scalars().all()
+        return sorted(events, key=lambda e: e.date)
