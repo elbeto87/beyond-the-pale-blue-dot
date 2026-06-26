@@ -10,9 +10,9 @@ class ImpactEventService:
     def __init__(self, impact_event_repository: ImpactEventRepository):
         self.impact_event_repository = impact_event_repository
 
-    def get_top_by_risk(self, count: int = 10) -> list[ImpactEventSchema]:
+    def get_top_by_risk(self, count: int = 10, time_range: int = 100) -> list[ImpactEventSchema]:
         logger.info("Getting top risk impact data for count: {}", count)
-        impact_events = self.impact_event_repository.get_top_by_risk(count)
+        impact_events = self.impact_event_repository.get_top_by_risk(count, time_range)
         if not impact_events:
             raise ImpactEventNotFoundException
         return [
