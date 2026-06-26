@@ -20,7 +20,7 @@ class ImpactEventService:
             for impact_event in impact_events
         ]
 
-    def get_top_by_probability(self, count: int = 10) -> list[ImpactEventSchema]:
+    def get_top_by_probability(self, count: int = 10, time_range: int = 100) -> list[ImpactEventSchema]:
         logger.info("Getting top probability impact data for count: {}", count)
         impact_events = self.impact_event_repository.get_top_by_probability(count)
         if not impact_events:
@@ -30,7 +30,7 @@ class ImpactEventService:
             for impact_event in impact_events
         ]
 
-    def get_top_by_size(self, count: int = 10) -> list[ImpactEventSchema]:
+    def get_top_by_size(self, count: int = 10, time_range: int = 100) -> list[ImpactEventSchema]:
         logger.info("Getting top sizer impact data for count: {}", count)
         impact_events = self.impact_event_repository.get_top_by_size(count)
         if not impact_events:

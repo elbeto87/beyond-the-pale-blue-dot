@@ -21,7 +21,7 @@ class ImpactEventRepository:
         return self._session.execute(stmt).scalar_one_or_none()
 
     def get_top_by_risk(self, count: int = 10, time_range: int = 100) -> Sequence[ImpactEventModel]:
-        today = date.today().isoformat()  # "2026-06-26"
+        today = date.today().isoformat()
         cutoff = (date.today() + relativedelta(years=time_range)).isoformat()
         stmt = (
             select(ImpactEventModel)
@@ -33,7 +33,7 @@ class ImpactEventRepository:
         return self._session.execute(stmt).scalars().all()
 
     def get_top_by_probability(self, count: int = 10, time_range: int = 100) -> Sequence[ImpactEventModel]:
-        today = date.today().isoformat()  # "2026-06-26"
+        today = date.today().isoformat()
         cutoff = (date.today() + relativedelta(years=time_range)).isoformat()
         stmt = (
             select(ImpactEventModel)
@@ -45,7 +45,7 @@ class ImpactEventRepository:
         return self._session.execute(stmt).scalars().all()
 
     def get_top_by_size(self, count: int = 10, time_range: int = 100) -> Sequence[ImpactEventModel]:
-        today = date.today().isoformat()  # "2026-06-26"
+        today = date.today().isoformat()
         cutoff = (date.today() + relativedelta(years=time_range)).isoformat()
         stmt = (
             select(ImpactEventModel)
