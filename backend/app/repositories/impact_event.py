@@ -1,13 +1,13 @@
+from collections.abc import Sequence
 from datetime import date
-from dateutil.relativedelta import relativedelta
-from typing import Sequence
 
+from dateutil.relativedelta import relativedelta
 from loguru import logger
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.models.impact_event import ImpactEventModel
 from app.models.asteroid import AsteroidModel
+from app.models.impact_event import ImpactEventModel
 
 
 class ImpactEventRepository:

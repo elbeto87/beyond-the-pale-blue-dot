@@ -1,11 +1,10 @@
 from decimal import Decimal
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, ForeignKey, Float, Numeric
+from sqlalchemy import Float, ForeignKey, Numeric, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
-
 
 if TYPE_CHECKING:
     from app.models.asteroid import AsteroidModel

@@ -1,8 +1,8 @@
 from loguru import logger
 
-from app.schemas.impact_event import ImpactEventSchema
-from app.repositories.impact_event import ImpactEventRepository
 from app.exceptions import ImpactEventNotFoundException
+from app.repositories.impact_event import ImpactEventRepository
+from app.schemas.impact_event import ImpactEventSchema
 
 
 class ImpactEventService:

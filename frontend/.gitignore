@@ -1,0 +1,22 @@
+node_modules
+dist
+dist-ssr
+*.local
+
+# Build artifacts generados por tsc (NO deben versionarse: Vite carga vite.config.js
+# antes que vite.config.ts y romperia el proxy)
+vite.config.js
+vite.config.d.ts
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+

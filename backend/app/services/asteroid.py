@@ -1,8 +1,8 @@
 from loguru import logger
 
+from app.exceptions import AsteroidNotFoundException
 from app.repositories.asteroid import AsteroidRepository
 from app.schemas.asteroid import AsteroidSchema
-from app.exceptions import AsteroidNotFoundException
 
 
 class AsteroidService:

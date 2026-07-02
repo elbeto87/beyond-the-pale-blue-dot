@@ -4,13 +4,11 @@ from decimal import Decimal
 import httpx
 from httpx import HTTPStatusError
 from loguru import logger
-from sqlalchemy.exc import IntegrityError
 
 from app.config import settings
 from app.database import SessionLocal
 from app.models.asteroid import AsteroidModel
 from app.models.impact_event import ImpactEventModel
-
 
 SCALE_FACTOR = 1_000_000
 

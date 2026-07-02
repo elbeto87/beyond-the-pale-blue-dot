@@ -59,7 +59,7 @@ export function ImpactCountdown() {
       </span>
       <span className="impact-countdown__body">
         <span className="impact-countdown__label">
-          {isPast ? 'IMPACT ELAPSED' : 'IMPACT COUNTDOWN'} · {event.asteroid.name}
+          {isPast ? 'IMPACT ELAPSED' : 'MOST LETHAL IMPACT EVENT IN'}
         </span>
         <span className="impact-countdown__time">
           {years > 0 && <span className="impact-countdown__unit">{years}y</span>}

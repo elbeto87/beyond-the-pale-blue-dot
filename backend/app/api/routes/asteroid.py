@@ -3,9 +3,9 @@ from http import HTTPStatus
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from app.api.dependencies import get_asteroid_service
+from app.exceptions import AsteroidNotFoundException
 from app.schemas.asteroid import AsteroidSchema
 from app.services.asteroid import AsteroidService
-from app.exceptions import AsteroidNotFoundException
 
 router = APIRouter(
     tags=["asteroid"],
