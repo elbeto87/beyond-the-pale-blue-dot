@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-ARG VITE_API_URL=http://localhost:8000
-ENV VITE_API_URL=$VITE_API_URL
+ARG API_PROXY_TARGET=http://localhost:8000
+ENV API_PROXY_TARGET=$API_PROXY_TARGET
 
 CMD ["npm", "run", "dev"]

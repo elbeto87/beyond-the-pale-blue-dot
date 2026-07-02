@@ -44,11 +44,13 @@ services:
     build:
       context: frontend
       args:
-        VITE_API_URL: http://api:8000
+        API_PROXY_TARGET: http://api:8000
     ports:
       - "5173:5173"
     environment:
-      - VITE_API_URL=http://api:8000
+      # App uses relative URLs; the dev-server proxy forwards them to the backend.
+      - VITE_API_URL=
+      - API_PROXY_TARGET=http://api:8000
     volumes:
       - ./frontend:/app
       - /app/node_modules
