@@ -4,6 +4,7 @@ import { RANKING_VIEWS } from './views.config';
 import { useSelectedImpactEvent } from '../viewer/selectedImpactEvent.store';
 import type { ImpactEvent } from '../../shared/api/types';
 import {API_CONFIG} from "../../shared/api/config";
+import { fetchWithCache, getCached } from '../../shared/api/cache';
 import {YearRangeSelect} from "./YearRangeSelect.tsx";
 import { useYearRange } from './yearRange.store';
 
@@ -22,20 +23,38 @@ export function SimulationPanel() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
     const params = new URLSearchParams({
       count: '10',
       time_range: String(years), // ← se envía el dropdown
     });
-    fetch(`${API_BASE}${view.endpoint}?${params}`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
+    const url = `${API_BASE}${view.endpoint}?${params}`;
+
+    // Si la combinación ya está en caché, la mostramos al instante (sin spinner).
+    const cached = getCached<ImpactEvent[]>(url);
+    if (cached) {
+      setEvents(cached);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    fetchWithCache<ImpactEvent[]>(url)
+      .then((data) => {
+        if (!cancelled) setEvents(data);
       })
-      .then((data: ImpactEvent[]) => setEvents(data))
-      .catch((err) => setError(String(err)))
-      .finally(() => setLoading(false));
+      .catch((err) => {
+        if (!cancelled) setError(String(err));
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [view.endpoint, years]);
 
   return (
