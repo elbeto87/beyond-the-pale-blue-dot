@@ -1,7 +1,7 @@
 from decimal import Decimal
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, ForeignKey, Float, Numeric, Date, Index
+from sqlalchemy import String, ForeignKey, Float, Numeric
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
@@ -16,13 +16,9 @@ class ImpactEventModel(Base):
 
     impact_event_id: Mapped[str] = mapped_column(String, primary_key=True)
     asteroid_id: Mapped[str] = mapped_column(ForeignKey("asteroids.asteroid_id"), index=True)
-    date: Mapped[str] = mapped_column(Date)
+    date: Mapped[str] = mapped_column(String)
     impact_probability: Mapped[Decimal] = mapped_column(Numeric())
     energy: Mapped[float] = mapped_column(Numeric())
     dangerous_score: Mapped[float] = mapped_column(Float)
 
     asteroid: Mapped["AsteroidModel"] = relationship(back_populates="impact_events")
-
-    __table_args__ = (
-        Index("ix_impact_events_asteroid_id", "asteroid_id"),
-    )
