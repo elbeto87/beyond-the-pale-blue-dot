@@ -82,5 +82,6 @@ dist-ssr
 .env
 .DS_Store
 
-# GithubCopilot instructions
+# GithubCopilot instructions & skills
 .github/copilot-instructions.md
+.github/skills.md
