@@ -28,4 +28,4 @@ def get_asteroid_by_name(
     try:
         return asteroid_service.get_asteroid_by_name(asteroid_name)
     except AsteroidNotFoundException:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Asteroid not found")
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Asteroid not found") from None

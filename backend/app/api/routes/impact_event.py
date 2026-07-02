@@ -21,7 +21,7 @@ def get_top_risk_impact_data(
     try:
         return impact_event_service.get_top_by_risk(count=count, time_range=time_range)
     except ImpactEventNotFoundException:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Impact events not found")
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Impact events not found") from None
 
 
 @router.get("/top_by_probability", response_model=list[ImpactEventSchema])
@@ -33,7 +33,7 @@ def get_top_probability_impact_data(
     try:
         return impact_event_service.get_top_by_probability(count=count, time_range=time_range)
     except ImpactEventNotFoundException:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Impact events not found")
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Impact events not found") from None
 
 
 @router.get("/top_by_biggest", response_model=list[ImpactEventSchema])
@@ -45,4 +45,4 @@ def get_top_biggest_impact_data(
     try:
         return impact_event_service.get_top_by_size(count=count, time_range=time_range)
     except ImpactEventNotFoundException:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Impact events not found")
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Impact events not found") from None

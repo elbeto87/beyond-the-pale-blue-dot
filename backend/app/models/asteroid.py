@@ -17,4 +17,7 @@ class AsteroidModel(Base):
     estimated_diameter: Mapped[float | None] = mapped_column(Float, default=0.0)
     absolute_magnitude_h: Mapped[float | None] = mapped_column(Float, default=0.0)
 
-    impact_events: Mapped[list["ImpactEventModel"]] = relationship(back_populates="asteroid", cascade="all, delete-orphan")
+    impact_events: Mapped[list["ImpactEventModel"]] = relationship(
+        back_populates="asteroid",
+        cascade="all, delete-orphan",
+    )

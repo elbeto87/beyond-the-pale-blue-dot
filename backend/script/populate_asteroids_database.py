@@ -75,14 +75,21 @@ def populate_impact_event_database():
                     session.merge(asteroid_model)
                     logger.info("Asteroid '{}' merged (created/updated)", asteroid_model.asteroid_id)
                     session.flush()
-                    logger.info("Impact event '{}' with asteroid '{}' will be added to the database", impact_event['id'], asteroid_model.asteroid_id)
+                    logger.info(
+                        "Impact event '{}' with asteroid '{}' will be added to the database",
+                        impact_event['id'],
+                        asteroid_model.asteroid_id,
+                    )
                     impact_event_model = ImpactEventModel(
                             impact_event_id=impact_event["id"],
                             asteroid_id=asteroid_model.asteroid_id,
                             date=impact_event["date"],
                             impact_probability=Decimal(impact_event["ip"]),
                             energy=Decimal(impact_event["energy"]) * 1000,  # Expressed in kt
-                            dangerous_score=round(float(Decimal(impact_event["ip"]) * Decimal(impact_event["energy"]) * SCALE_FACTOR), 4),
+                            dangerous_score=round(
+                                float(Decimal(impact_event["ip"]) * Decimal(impact_event["energy"]) * SCALE_FACTOR),
+                                ndigits=4,
+                            ),
                         )
                     session.merge(impact_event_model)
                     session.commit()
