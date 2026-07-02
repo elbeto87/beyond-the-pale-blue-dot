@@ -74,7 +74,7 @@ export function SimulationPanel() {
         {!loading && !error && events.length > 0 && (
           <div className="risk-head">
             <span className="risk-head__rank" />
-            <span className="risk-head__name">Impact Event</span>
+            <span className="risk-head__name">Asteroid Name</span>
             <span className="risk-head__score">{view.metricLabel}</span>
             <span className="risk-head__date">{view.metricLabel2}</span>
           </div>
