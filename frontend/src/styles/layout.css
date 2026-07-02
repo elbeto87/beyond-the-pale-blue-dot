@@ -369,3 +369,124 @@
   background: #0b1320;
   color: var(--text);
 }
+
+/* ===== Impact countdown + red siren (toolbar, top-right) ===== */
+.impact-countdown {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 59, 59, 0.4);
+  border-radius: 8px;
+  background: rgba(255, 59, 59, 0.06);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.impact-countdown:hover {
+  border-color: var(--danger);
+  background: rgba(255, 59, 59, 0.12);
+  box-shadow: 0 0 18px rgba(255, 59, 59, 0.18);
+}
+
+.impact-countdown:focus-visible {
+  outline: none;
+  border-color: var(--danger);
+  box-shadow: 0 0 0 2px rgba(255, 59, 59, 0.35);
+}
+
+/* Rotating siren dome with a pulsing red light */
+.impact-countdown__siren {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--danger);
+  box-shadow: 0 0 8px rgba(255, 59, 59, 0.8);
+  animation: siren-pulse 1s ease-in-out infinite;
+}
+
+.impact-countdown__siren-light {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 59, 59, 0.55) 0%, rgba(255, 59, 59, 0) 70%);
+  animation: siren-flash 1s ease-in-out infinite;
+}
+
+@keyframes siren-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 6px rgba(255, 59, 59, 0.6);
+    transform: scale(0.92);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(255, 59, 59, 1);
+    transform: scale(1.08);
+  }
+}
+
+@keyframes siren-flash {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.impact-countdown__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1;
+}
+
+.impact-countdown__label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--danger);
+}
+
+.impact-countdown__time {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.impact-countdown__unit {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.impact-countdown__clock {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #ff6b6b;
+}
+
+@media (max-width: 900px) {
+  .impact-countdown {
+    margin-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .impact-countdown__siren,
+  .impact-countdown__siren-light {
+    animation: none;
+  }
+}
