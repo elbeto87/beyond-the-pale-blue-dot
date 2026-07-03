@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     NASA_API_KEY: str = "DEMO_KEY"
     ALLOWED_ORIGINS: list[str] = [
         "http://localhost:5173",
-        "https://the-end-of-the-world-ten.vercel.app",
+        "https://beyond-the-pale-blue-dot.vercel.app",
     ]
     DATABASE_URL: str
     PORT: int = 8000
