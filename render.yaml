@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: beyond-the-pale-blue-dot-api
+    runtime: docker
+    plan: free
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    preDeployCommand: alembic upgrade head
+    healthCheckPath: /docs
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: NASA_API_KEY
+        sync: false
+      - key: NASA_JPL_SENTRY_BASE_URL
+        value: https://ssd-api.jpl.nasa.gov/sentry.api
+      - key: NASA_JPL_SBDB_BASE_URL
+        value: https://ssd-api.jpl.nasa.gov/sbdb.api
+      - key: NASA_NEO_WS_BASE_URL
+        value: https://api.nasa.gov/neo/rest/v1/neo
