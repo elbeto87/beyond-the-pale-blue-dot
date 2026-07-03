@@ -1,4 +1,4 @@
-# The End of the World
+# Beyond the Pale Blue Dot
 
 An API that calculates when the end of the world could occur, scientifically speaking.
 
@@ -8,7 +8,7 @@ This is a humorous project that demonstrates just how unlikely such an event act
 
 ---
 
-The end of the world es una API que devuelve cuando será el fin del mundo científicmente hablando.
+Beyond the Pale Blue Dot es una API que devuelve cuando será el fin del mundo científicmente hablando.
 
 A partir de la API de la NASA [https://api.nasa.gov/](https://api.nasa.gov/) , podremos saber las fechas de los asteroides que se acercan a la Tierra, y a partir de ahí, calcular el día del fin del mundo.
 

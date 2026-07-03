@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "the-end-of-the-world"
+name = "beyond-the-pale-blue-dot"
 version = "0.1.0"
-description = "FastAPI application to demonstrate the end of the world."
+description = "FastAPI application to demonstrate Beyond the Pale Blue Dot."
 authors = ["elbeto87"]
 packages = [{include = "app"}]
 

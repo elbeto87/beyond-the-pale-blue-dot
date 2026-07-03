@@ -17,8 +17,8 @@ async def lifespan(app: FastAPI):
     logger.info("Stopping the application...")
 
 app = FastAPI(
-    title="The end of the world",
-    description="The end of the world",
+    title="Beyond the Pale Blue Dot",
+    description="Beyond the Pale Blue Dot",
     version="0.0.1",
     docs_url="/",
     redoc_url="/redoc",
