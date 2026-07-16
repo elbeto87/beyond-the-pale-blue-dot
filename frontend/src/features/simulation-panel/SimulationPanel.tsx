@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useActiveCategory } from '../asteroid-tables/category.store';
 import { RANKING_VIEWS } from './views.config';
 import { useSelectedImpactEvent } from '../viewer/selectedImpactEvent.store';
+import { useSelectedAsteroid } from '../viewer/selectedAsteroid.store';
 import type { ImpactEvent } from '../../shared/api/types';
 import {API_CONFIG} from "../../shared/api/config";
 import { fetchWithCache, getCached } from '../../shared/api/cache';
@@ -16,6 +17,7 @@ export function SimulationPanel() {
   const view = RANKING_VIEWS[active];
   const selected = useSelectedImpactEvent((s) => s.selected);
   const setSelected = useSelectedImpactEvent((s) => s.setSelected);
+  const clearAsteroid = useSelectedAsteroid((s) => s.clear);
   const years = useYearRange((s) => s.years);
 
   const [events, setEvents] = useState<ImpactEvent[]>([]);
@@ -84,7 +86,10 @@ export function SimulationPanel() {
             key={event.impact_event_id}
             type="button"
             className={`risk-row${event.impact_event_id === selected?.impact_event_id ? ' is-selected' : ''}`}
-            onClick={() => setSelected(event)}
+            onClick={() => {
+              clearAsteroid();
+              setSelected(event);
+            }}
           >
             <span className="risk-row__rank">{index + 1}</span>
             <span className="risk-row__name">{event.asteroid.name}</span>

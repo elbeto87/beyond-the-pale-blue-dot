@@ -3,6 +3,7 @@ import type { ImpactEvent } from '../../shared/api/types';
 import { API_CONFIG } from '../../shared/api/config';
 import { fetchWithCache } from '../../shared/api/cache';
 import { useSelectedImpactEvent } from '../viewer/selectedImpactEvent.store';
+import { useSelectedAsteroid } from '../viewer/selectedAsteroid.store';
 import { getCountdown, parseImpactDate } from './parseImpactDate';
 
 const API_BASE = API_CONFIG.baseUrl;
@@ -14,6 +15,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 export function ImpactCountdown() {
   const setSelected = useSelectedImpactEvent((s) => s.setSelected);
+  const clearAsteroid = useSelectedAsteroid((s) => s.clear);
 
   const [event, setEvent] = useState<ImpactEvent | null>(null);
   const [now, setNow] = useState(() => new Date());
@@ -51,7 +53,10 @@ export function ImpactCountdown() {
     <button
       type="button"
       className="impact-countdown"
-      onClick={() => setSelected(event)}
+      onClick={() => {
+        clearAsteroid();
+        setSelected(event);
+      }}
       title={`View impact event ${event.asteroid.name}`}
     >
       <span className="impact-countdown__siren" aria-hidden="true">

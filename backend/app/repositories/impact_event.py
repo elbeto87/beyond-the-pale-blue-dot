@@ -24,7 +24,7 @@ class ImpactEventRepository:
         stmt = (
             select(ImpactEventModel)
             .where(ImpactEventModel.asteroid_id == asteroid_id)
-            .order_by(ImpactEventModel.dangerous_score.desc())
+            .order_by(ImpactEventModel.date.asc())
             .limit(count)
         )
         logger.debug("Executing query to get impact events by asteroid id: {}", stmt)

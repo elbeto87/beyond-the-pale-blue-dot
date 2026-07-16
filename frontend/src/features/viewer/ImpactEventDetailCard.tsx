@@ -1,4 +1,5 @@
 import { useSelectedImpactEvent } from './selectedImpactEvent.store';
+import { useSelectedAsteroid } from './selectedAsteroid.store';
 import type { ImpactEvent } from '../../shared/api/types';
 
 interface DetailRow {
@@ -25,6 +26,8 @@ const DETAIL_ROWS: DetailRow[] = [
 
 export function ImpactEventDetailCard() {
   const selected = useSelectedImpactEvent((state) => state.selected);
+  const setSelected = useSelectedImpactEvent((state) => state.setSelected);
+  const asteroid = useSelectedAsteroid((state) => state.asteroid);
 
   if (!selected) {
     return (
@@ -34,8 +37,21 @@ export function ImpactEventDetailCard() {
     );
   }
 
+  // When the event was reached through the asteroid card, allow going back to
+  // the list of potential impact dates for that asteroid.
+  const showBack = asteroid != null;
+
   return (
     <div className="detail-card">
+      {showBack && (
+        <button
+          type="button"
+          className="detail-card__back"
+          onClick={() => setSelected(null)}
+        >
+          ← Back to {asteroid?.name}
+        </button>
+      )}
       <div className="detail-card__header">
         <span className="detail-card__eyebrow">IMPACT EVENT</span>
         <h3 className="detail-card__name">{selected.impact_event_id}</h3>

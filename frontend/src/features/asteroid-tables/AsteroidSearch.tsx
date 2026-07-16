@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { Asteroid } from '../../shared/api/types';
 import { fetchImpactEventsByAsteroid, searchAsteroids } from '../../shared/api/asteroid';
 import { useSelectedImpactEvent } from '../viewer/selectedImpactEvent.store';
+import { useSelectedAsteroid } from '../viewer/selectedAsteroid.store';
 
 /**
  * Search box that queries the backend for asteroids by name and shows the
@@ -15,7 +16,8 @@ export function AsteroidSearch() {
   const [selectingId, setSelectingId] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const setSelected = useSelectedImpactEvent((s) => s.setSelected);
+  const setSelectedEvent = useSelectedImpactEvent((s) => s.setSelected);
+  const setSelectedAsteroid = useSelectedAsteroid((s) => s.setAsteroid);
 
   // Debounced search whenever the query changes.
   useEffect(() => {
@@ -60,16 +62,16 @@ export function AsteroidSearch() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // When an asteroid is picked, fetch its impact event and show it in the
-  // detail card, mirroring the behaviour of the top 10 ranking rows.
+  // When an asteroid is picked, fetch all of its potential impact events and
+  // show the asteroid data sheet, whose impact dates link to each event card.
   async function handleSelect(asteroid: Asteroid) {
     setQuery(asteroid.name);
     setSelectingId(asteroid.asteroid_id);
     try {
-      const events = await fetchImpactEventsByAsteroid(asteroid.asteroid_id, 1);
-      if (events.length > 0) {
-        setSelected(events[0]);
-      }
+      const events = await fetchImpactEventsByAsteroid(asteroid.asteroid_id, 50);
+      // Clear any previously selected event so the asteroid card is shown first.
+      setSelectedEvent(null);
+      setSelectedAsteroid(asteroid, events);
     } finally {
       setSelectingId(null);
       setOpen(false);
