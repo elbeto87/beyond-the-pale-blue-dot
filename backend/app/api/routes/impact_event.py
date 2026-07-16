@@ -46,3 +46,16 @@ def get_top_biggest_impact_data(
         return impact_event_service.get_top_by_size(count=count, time_range=time_range)
     except ImpactEventNotFoundException:
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Impact events not found") from None
+
+
+@router.get("/by_asteroid/{asteroid_id}", response_model=list[ImpactEventSchema])
+def get_impact_events_by_asteroid(
+        asteroid_id: str,
+        count: int = Query(10, ge=1, le=50, description="Maximum number of impact events to retrieve"),
+        impact_event_service: ImpactEventService = Depends(get_impact_event_service),
+) -> list[ImpactEventSchema]:
+    try:
+        return impact_event_service.get_by_asteroid_id(asteroid_id, count=count)
+    except ImpactEventNotFoundException:
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Impact events not found") from None
+

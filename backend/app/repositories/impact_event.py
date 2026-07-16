@@ -20,6 +20,16 @@ class ImpactEventRepository:
         logger.debug("Executing query to get impact event: {}", stmt)
         return self._session.execute(stmt).scalar_one_or_none()
 
+    def get_by_asteroid_id(self, asteroid_id: str, count: int = 10) -> Sequence[ImpactEventModel]:
+        stmt = (
+            select(ImpactEventModel)
+            .where(ImpactEventModel.asteroid_id == asteroid_id)
+            .order_by(ImpactEventModel.dangerous_score.desc())
+            .limit(count)
+        )
+        logger.debug("Executing query to get impact events by asteroid id: {}", stmt)
+        return self._session.execute(stmt).scalars().all()
+
     def get_top_by_risk(self, count: int = 10, time_range: int = 100) -> Sequence[ImpactEventModel]:
         today = date.today().isoformat()
         cutoff = (date.today() + relativedelta(years=time_range)).isoformat()

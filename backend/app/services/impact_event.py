@@ -39,3 +39,14 @@ class ImpactEventService:
             ImpactEventSchema.model_validate(impact_event)
             for impact_event in impact_events
         ]
+
+    def get_by_asteroid_id(self, asteroid_id: str, count: int = 10) -> list[ImpactEventSchema]:
+        logger.info("Getting impact events for asteroid: {}", asteroid_id)
+        impact_events = self.impact_event_repository.get_by_asteroid_id(asteroid_id, count)
+        if not impact_events:
+            raise ImpactEventNotFoundException
+        return [
+            ImpactEventSchema.model_validate(impact_event)
+            for impact_event in impact_events
+        ]
+

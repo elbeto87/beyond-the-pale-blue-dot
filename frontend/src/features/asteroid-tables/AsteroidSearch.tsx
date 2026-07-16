@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Asteroid } from '../../shared/api/types';
-import { searchAsteroids } from '../../shared/api/asteroid';
+import { fetchImpactEventsByAsteroid, searchAsteroids } from '../../shared/api/asteroid';
+import { useSelectedImpactEvent } from '../viewer/selectedImpactEvent.store';
 
 /**
  * Search box that queries the backend for asteroids by name and shows the
@@ -11,7 +12,10 @@ export function AsteroidSearch() {
   const [results, setResults] = useState<Asteroid[]>([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [selectingId, setSelectingId] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const setSelected = useSelectedImpactEvent((s) => s.setSelected);
 
   // Debounced search whenever the query changes.
   useEffect(() => {
@@ -56,6 +60,22 @@ export function AsteroidSearch() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // When an asteroid is picked, fetch its impact event and show it in the
+  // detail card, mirroring the behaviour of the top 10 ranking rows.
+  async function handleSelect(asteroid: Asteroid) {
+    setQuery(asteroid.name);
+    setSelectingId(asteroid.asteroid_id);
+    try {
+      const events = await fetchImpactEventsByAsteroid(asteroid.asteroid_id, 1);
+      if (events.length > 0) {
+        setSelected(events[0]);
+      }
+    } finally {
+      setSelectingId(null);
+      setOpen(false);
+    }
+  }
+
   return (
     <div className="asteroid-search" ref={containerRef}>
       <input
@@ -82,10 +102,8 @@ export function AsteroidSearch() {
                 <button
                   type="button"
                   className="asteroid-search__result"
-                  onClick={() => {
-                    setQuery(asteroid.name);
-                    setOpen(false);
-                  }}
+                  disabled={selectingId === asteroid.asteroid_id}
+                  onClick={() => handleSelect(asteroid)}
                 >
                   <span className="asteroid-search__name">{asteroid.name}</span>
                   {asteroid.estimated_diameter != null && (
