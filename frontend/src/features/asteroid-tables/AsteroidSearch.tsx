@@ -108,7 +108,7 @@ export function AsteroidSearch() {
                   <span className="asteroid-search__name">{asteroid.name}</span>
                   {asteroid.estimated_diameter != null && (
                     <span className="asteroid-search__meta">
-                      ⌀ {asteroid.estimated_diameter.toFixed(2)} km
+                      ⌀ {asteroid.estimated_diameter.toFixed(2)} m
                     </span>
                   )}
                 </button>
