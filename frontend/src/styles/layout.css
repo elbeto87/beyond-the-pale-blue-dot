@@ -30,22 +30,50 @@
   display: flex;
   align-items: center;
   gap: 28px;
-  height: 56px;
-  padding: 0 20px;
+  min-height: 56px;
+  padding: 12px 20px;
   border-bottom: 1px solid var(--border);
   z-index: 10;
+}
+
+.toolbar__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.toolbar__controls {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.toolbar__controls-top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.toolbar__controls-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
 }
 
 .toolbar__brand {
   letter-spacing: 4px;
   color: var(--accent);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 20px;
 }
 
 .toolbar__tabs {
   display: flex;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 .toolbar__tab {
@@ -57,6 +85,7 @@
   cursor: pointer;
   font-size: 13px;
   letter-spacing: 1px;
+  white-space: nowrap;
   transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
@@ -69,6 +98,89 @@
   border-color: var(--border);
   background: var(--panel);
   box-shadow: 0 0 18px rgba(56, 225, 255, 0.08);
+}
+
+/* ===== Tracker switch (asteroid <-> exoplanet) ===== */
+.tracker-switch {
+  position: relative;
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.tracker-switch__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  height: calc(100% - 6px);
+  border-radius: 6px;
+  background: rgba(56, 225, 255, 0.14);
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 18px rgba(56, 225, 255, 0.12);
+  transition: transform 0.2s ease;
+}
+
+.tracker-switch__option {
+  position: relative;
+  z-index: 1;
+  min-width: 96px;
+  padding: 6px 14px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.tracker-switch__option:hover {
+  color: var(--text);
+}
+
+.tracker-switch__option.is-active {
+  color: var(--accent);
+}
+
+/* ===== Exoplanet tracker (placeholder) ===== */
+.app-shell__body--single {
+  display: flex;
+}
+
+.exoplanet-tracker {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  padding: 40px;
+}
+
+.exoplanet-tracker__eyebrow {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--muted);
+}
+
+.exoplanet-tracker__title {
+  margin: 0;
+  font-size: 30px;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+
+.exoplanet-tracker__hint {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: var(--muted);
 }
 
 /* ===== Asteroid search box (toolbar) ===== */
@@ -177,6 +289,22 @@
 .app-shell__sidebar {
   border-right: 1px solid var(--border);
   overflow-y: auto;
+}
+
+/* ===== Hide scrollbars (keep scroll functionality) ===== */
+.app-shell__sidebar,
+.asteroid-search__results,
+.detail-card {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.app-shell__sidebar::-webkit-scrollbar,
+.asteroid-search__results::-webkit-scrollbar,
+.detail-card::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none; /* Chrome/Safari/Edge */
 }
 
 /* ===== Asteroid viewer (impact event area) ===== */
@@ -537,7 +665,6 @@
 
 /* ===== Impact countdown + red siren (toolbar, top-right) ===== */
 .impact-countdown {
-  margin-left: auto;
   display: inline-flex;
   align-items: center;
   gap: 12px;
