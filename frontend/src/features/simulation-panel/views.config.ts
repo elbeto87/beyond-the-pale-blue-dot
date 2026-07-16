@@ -1,5 +1,6 @@
 import type { AsteroidCategory } from '../asteroid-tables/tabs.config';
 import type { ImpactEvent } from '../../shared/api/types';
+import { formatImpactDate } from '../../shared/date';
 
 export interface RankingView {
   endpoint: string;
@@ -19,7 +20,7 @@ export const RANKING_VIEWS: Record<AsteroidCategory, RankingView> = {
     metricLabel: 'Risk Score',
     metric: (e) => e.dangerous_score.toFixed(2),
     metricLabel2: 'Impact Date',
-    metric2: (e) => e.date,
+    metric2: (e) => formatImpactDate(e.date),
   },
   large: {
     endpoint: '/impact_event/top_by_biggest',
@@ -28,7 +29,7 @@ export const RANKING_VIEWS: Record<AsteroidCategory, RankingView> = {
     metricLabel: 'Asteroid Diameter',
     metric: (e) => (e.asteroid.estimated_diameter ?? '—') + 'm',
     metricLabel2: 'Impact Date',
-    metric2: (e) => e.date,
+    metric2: (e) => formatImpactDate(e.date),
   },
   near: {
     endpoint: '/impact_event/top_by_probability',
@@ -37,6 +38,6 @@ export const RANKING_VIEWS: Record<AsteroidCategory, RankingView> = {
     metricLabel: 'Probability',
     metric: (e) => (e.impact_probability * 100).toFixed(6) + '%',
     metricLabel2: 'Impact Date',
-    metric2: (e) => e.date,
+    metric2: (e) => formatImpactDate(e.date),
   },
 };

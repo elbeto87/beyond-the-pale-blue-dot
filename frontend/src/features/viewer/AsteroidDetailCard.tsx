@@ -1,5 +1,6 @@
 import { useSelectedAsteroid } from './selectedAsteroid.store';
 import { useSelectedImpactEvent } from './selectedImpactEvent.store';
+import { formatImpactDate } from '../../shared/date';
 
 /**
  * Data sheet shown when an asteroid is picked from the search box. The title is
@@ -35,9 +36,9 @@ export function AsteroidDetailCard() {
                   className="impact-date-list__link"
                   onClick={() => setSelectedEvent(event)}
                 >
-                  <span className="impact-date-list__date">{event.date}</span>
+                  <span className="impact-date-list__date">{formatImpactDate(event.date)}</span>
                   <span className="impact-date-list__meta">
-                    {(event.impact_probability * 100).toFixed(4)} %
+                    {(event.impact_probability * 100).toFixed(6)} %
                   </span>
                 </button>
               </li>

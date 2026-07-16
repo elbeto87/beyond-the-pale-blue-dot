@@ -1,5 +1,6 @@
 import { useSelectedImpactEvent } from './selectedImpactEvent.store';
 import { useSelectedAsteroid } from './selectedAsteroid.store';
+import { formatImpactDate } from '../../shared/date';
 import type { ImpactEvent } from '../../shared/api/types';
 
 interface DetailRow {
@@ -9,7 +10,7 @@ interface DetailRow {
 
 const DETAIL_ROWS: DetailRow[] = [
   { label: 'Asteroid name', value: (e) => e.asteroid.name },
-  { label: 'Impact date', value: (e) => e.date },
+  { label: 'Impact date', value: (e) => formatImpactDate(e.date) },
   { label: 'Probability', value: (e) => `${(e.impact_probability * 100).toFixed(6)} %` },
   { label: 'Energy', value: (e) => `${e.energy.toLocaleString()} kt` },
   { label: 'Risk score', value: (e) => e.dangerous_score.toFixed(2) },
