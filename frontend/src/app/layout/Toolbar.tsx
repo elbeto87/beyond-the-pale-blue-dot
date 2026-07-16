@@ -1,5 +1,6 @@
 import { ASTEROID_TABS } from '../../features/asteroid-tables/tabs.config';
 import { useActiveCategory } from '../../features/asteroid-tables/category.store';
+import { AsteroidSearch } from '../../features/asteroid-tables/AsteroidSearch';
 import { ImpactCountdown } from '../../features/impact-countdown/ImpactCountdown';
 
 export function Toolbar() {
@@ -21,6 +22,7 @@ export function Toolbar() {
           </button>
         ))}
       </nav>
+      <AsteroidSearch />
       <ImpactCountdown />
     </header>
   );

@@ -22,3 +22,8 @@ class AsteroidService:
         asteroids = self.asteroid_repository.get_all(count)
         return [AsteroidSchema.model_validate(asteroid) for asteroid in asteroids]
 
+    def search_asteroids(self, query: str, count: int = 10) -> list[AsteroidSchema]:
+        logger.info("Searching asteroids with query: {}", query)
+        asteroids = self.asteroid_repository.search_by_name(query, count)
+        return [AsteroidSchema.model_validate(asteroid) for asteroid in asteroids]
+
