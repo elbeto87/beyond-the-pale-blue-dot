@@ -29,6 +29,24 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* On smaller / touch screens the layout grows beyond the viewport,
+   so let the document scroll naturally instead of clipping content. */
+@media (max-width: 900px) {
+  html,
+  body,
+  #root {
+    height: auto;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  body {
+    /* Smooth momentum scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 button {
   font-family: inherit;
 }
