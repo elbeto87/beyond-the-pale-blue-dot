@@ -604,6 +604,23 @@
     justify-content: flex-start;
   }
 
+  /* Tabs take the full row and wrap instead of overflowing to the right,
+     which was clipping the active tab's border against the shell edge. */
+  .toolbar__tabs {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .toolbar__tab {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  /* Keep the selected tab's glow inside the rounded, clipped shell */
+  .toolbar__tab.is-active {
+    box-shadow: none;
+  }
+
   /* Make the search clearly visible instead of a cramped 220px box */
   .asteroid-search {
     width: 100%;
