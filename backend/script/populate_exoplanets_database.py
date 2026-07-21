@@ -20,6 +20,21 @@ def get_exoplanet_data(client: httpx.Client) -> list[dict]:
     response.raise_for_status()
     return response.json()
 
+def get_potential_exoplanet_data(client: httpx.Client) -> list[dict]:
+    # this should be the local query to find potential habitable exoplanet
+    params = {
+        "query": (
+            "SELECT * "
+            "FROM ps "
+            "WHERE pl_insol BETWEEN 0.35 AND 1.5 "
+            "AND pl_rade BETWEEN 0.8 AND 1.5"
+        ),
+        "format": "json",
+    }
+    response = client.get(settings.NASA_EXOPLANET_ARCHIVE, params=params)
+    response.raise_for_status()
+    return response.json()
+
 def populate_exoplanet_database():
     session = SessionLocal()
     try:
