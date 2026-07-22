@@ -1,7 +1,9 @@
 import httpx
+from loguru import logger
 
 from app.config import settings
 from app.database import SessionLocal
+from app.models.exoplanet import ExoplanetModel
 
 
 def get_exoplanet_data(client: httpx.Client) -> list[dict]:
@@ -40,7 +42,28 @@ def populate_exoplanet_database():
     try:
         with httpx.Client(timeout=30.0) as client:
             exoplanet_data = get_exoplanet_data(client)
-            print(exoplanet_data)
+            for exoplanet in exoplanet_data:
+                exoplanet_to_add = ExoplanetModel(
+                    name=exoplanet.get("pl_name"),
+                    host_name=exoplanet.get("hostname"),
+                    discovery_year=exoplanet.get("disc_year"),
+                    discovery_method=exoplanet.get("discoverymethod"),
+                    radius=exoplanet.get("pl_rade"),
+                    mass=exoplanet.get("pl_bmasse"),
+                    density=exoplanet.get("pl_dens"),
+                    temperature=exoplanet.get("pl_eqt"),
+                    insolation=exoplanet.get("pl_insol"),
+                    orbit_period=exoplanet.get("pl_orbper"),
+                    orbit_eccentricity=exoplanet.get("pl_orbeccen"),
+                    orbit_smax=exoplanet.get("pl_orbsmax"),
+                    star_temperature=exoplanet.get("st_teff"),
+                )
+                session.add(exoplanet_to_add)
+                logger.info("Added exoplanet: {}", exoplanet_to_add.name)
+            session.commit()
+    except Exception as e:
+        session.rollback()
+        logger.error("Error populating exoplanet database: {}", e)
     finally:
         session.close()
     print("Populating exoplanet database completed.")
