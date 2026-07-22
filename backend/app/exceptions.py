@@ -3,3 +3,6 @@ class AsteroidNotFoundException(Exception):
 
 class ImpactEventNotFoundException(Exception):
     pass
+
+class ExoplanetNotFoundException(Exception):
+    pass

@@ -5,8 +5,10 @@ from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
 from app.repositories.asteroid import AsteroidRepository
+from app.repositories.exoplanet import ExoplanetRepository
 from app.repositories.impact_event import ImpactEventRepository
 from app.services.asteroid import AsteroidService
+from app.services.exoplanet import ExoplanetService
 from app.services.impact_event import ImpactEventService
 
 
@@ -23,6 +25,9 @@ def get_impact_event_repository(session: Session = Depends(get_session)) -> Impa
 def get_asteroid_repository(session: Session = Depends(get_session)) -> AsteroidRepository:
     return AsteroidRepository(session=session)
 
+def get_exoplanet_repository(session: Session = Depends(get_session)) -> ExoplanetRepository:
+    return ExoplanetRepository(session=session)
+
 def get_asteroid_service(
         asteroid_repository: AsteroidRepository = Depends(get_asteroid_repository),
 ) -> AsteroidService:
@@ -32,3 +37,8 @@ def get_impact_event_service(
         impact_event_repository: ImpactEventRepository = Depends(get_impact_event_repository),
 ) -> ImpactEventService:
     return ImpactEventService(impact_event_repository=impact_event_repository)
+
+def get_exoplanet_service(
+        exoplanet_repository: ExoplanetRepository = Depends(get_exoplanet_repository)
+) -> ExoplanetService:
+    return ExoplanetService(exoplanet_repository=exoplanet_repository)
