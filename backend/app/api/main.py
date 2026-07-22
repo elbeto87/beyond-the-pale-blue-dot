@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 
-from app.api.routes import asteroid, impact_event
+from app.api.routes import asteroid, impact_event, exoplanet
 from app.config import settings
 from app.logging import setup_logging
 
@@ -28,6 +28,7 @@ app = FastAPI(
 
 app.include_router(asteroid.router, prefix="/asteroid")
 app.include_router(impact_event.router, prefix="/impact_event")
+app.include_router(exoplanet.router, prefix="/exoplanet")
 
 app.add_middleware(
     CORSMiddleware,
