@@ -1,9 +1,19 @@
-/* ===== Starfield background (global, behind everything) ===== */
+/* ===== Starfield background (global) ===== */
 .starfield-background {
   position: fixed;
   inset: 0;
-  z-index: 0;
-  pointer-events: none;
+  /* Sit above the app shell so the drifting stars are also visible when they
+     pass over the site card, not only in the surrounding margins. */
+  z-index: 3;
+}
+
+/* react-three-fiber re-enables pointer events (inline styles) on the wrapper
+   div and canvas it creates, which would swallow every click now that the
+   starfield sits above the shell. Force them off on the container and every
+   descendant so all interaction passes through to the UI below. */
+.starfield-background,
+.starfield-background * {
+  pointer-events: none !important;
 }
 
 .starfield-background canvas {
@@ -523,6 +533,13 @@
   font-size: 12px;
 }
 
+/* Exoplanet "Latest Discoveries" variant: only the Year column (no Method),
+   which lets the Exoplanet Name column stretch a bit wider. */
+.risk-head--exo,
+.risk-row--exo {
+  grid-template-columns: 24px 1fr 88px;
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
   .app-shell {
@@ -596,6 +613,11 @@
   .risk-head {
     grid-template-columns: 20px minmax(0, 1fr) 72px 92px;
     column-gap: 10px;
+  }
+
+  .risk-row--exo,
+  .risk-head--exo {
+    grid-template-columns: 20px minmax(0, 1fr) 72px;
   }
 
   .risk-head {
@@ -793,6 +815,43 @@
   .impact-countdown {
     margin-left: 0;
   }
+}
+
+/* ===== Cyan variant: latest exoplanet discovered (toolbar) ===== */
+.impact-countdown--exo {
+  border-color: rgba(56, 225, 255, 0.4);
+  background: rgba(56, 225, 255, 0.06);
+}
+
+.impact-countdown--exo:hover {
+  border-color: var(--accent);
+  background: rgba(56, 225, 255, 0.12);
+  box-shadow: 0 0 18px rgba(56, 225, 255, 0.18);
+}
+
+.impact-countdown--exo:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(56, 225, 255, 0.35);
+}
+
+.impact-countdown__siren--exo {
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(56, 225, 255, 0.8);
+  animation: none;
+}
+
+.impact-countdown__siren-light--exo {
+  background: radial-gradient(circle, rgba(56, 225, 255, 0.55) 0%, rgba(56, 225, 255, 0) 70%);
+  animation: siren-flash 2s ease-in-out infinite;
+}
+
+.impact-countdown__label--exo {
+  color: var(--accent);
+}
+
+.impact-countdown__clock--exo {
+  color: var(--accent);
 }
 
 @media (prefers-reduced-motion: reduce) {

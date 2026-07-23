@@ -16,3 +16,12 @@ export async function searchExoplanets(query: string, count = 10): Promise<Exopl
   return fetchWithCache<Exoplanet[]>(`${API_BASE}/exoplanet/search?${params}`);
 }
 
+/**
+ * Fetches the latest discovered exoplanets, ordered by discovery year
+ * (most recent first).
+ */
+export async function fetchLatestExoplanetDiscoveries(count = 10): Promise<Exoplanet[]> {
+  const params = new URLSearchParams({ count: String(count) });
+  return fetchWithCache<Exoplanet[]>(`${API_BASE}/exoplanet/latest_discoveries?${params}`);
+}
+

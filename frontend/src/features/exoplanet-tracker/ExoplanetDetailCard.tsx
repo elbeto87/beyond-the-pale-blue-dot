@@ -1,11 +1,17 @@
 import { useSelectedExoplanet } from './selectedExoplanet.store';
 
-function formatValue(value: number | string | null, unit = ''): string {
+function formatValue(value: number | string | null, unit = '', maxDecimals = 4): string {
   if (value === null || value === undefined) return '—';
   if (typeof value === 'number') {
-    return `${Number.isInteger(value) ? value : value.toLocaleString('en-US', { maximumFractionDigits: 4 })}${unit}`;
+    return `${Number.isInteger(value) ? value : value.toLocaleString('en-US', { maximumFractionDigits: maxDecimals })}${unit}`;
   }
   return `${value}${unit}`;
+}
+
+/** Converts a temperature in Kelvin to Celsius, rounded to the nearest degree. */
+function kelvinToCelsius(kelvin: number | null): number | null {
+  if (kelvin === null || kelvin === undefined) return null;
+  return Math.round(kelvin - 273.15);
 }
 
 /**
@@ -26,12 +32,12 @@ export function ExoplanetDetailCard() {
     { label: 'Radius', value: formatValue(exoplanet.radius, ' R⊕') },
     { label: 'Mass', value: formatValue(exoplanet.mass, ' M⊕') },
     { label: 'Density', value: formatValue(exoplanet.density, ' g/cm³') },
-    { label: 'Temperature', value: formatValue(exoplanet.temperature, ' K') },
+    { label: 'Temperature', value: formatValue(kelvinToCelsius(exoplanet.temperature), ' °C') },
     { label: 'Insolation', value: formatValue(exoplanet.insolation, ' S⊕') },
-    { label: 'Orbital period', value: formatValue(exoplanet.orbit_period, ' days') },
+    { label: 'Orbital period', value: formatValue(exoplanet.orbit_period == null ? null : Math.round(exoplanet.orbit_period), ' days') },
     { label: 'Orbital eccentricity', value: formatValue(exoplanet.orbit_eccentricity) },
     { label: 'Semi-major axis', value: formatValue(exoplanet.orbit_smax, ' AU') },
-    { label: 'Star temperature', value: formatValue(exoplanet.star_temperature, ' K') },
+    { label: 'Star temperature', value: formatValue(kelvinToCelsius(exoplanet.star_temperature), ' °C') },
   ];
 
   return (

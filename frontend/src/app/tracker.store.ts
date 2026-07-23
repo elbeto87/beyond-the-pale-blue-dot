@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
 export const TRACKER_MODES = [
-  { id: 'asteroid', label: 'ASTEROID' },
-  { id: 'exoplanet', label: 'EXOPLANET' },
+  { id: 'asteroid', label: 'ASTEROIDS' },
+  { id: 'exoplanet', label: 'EXOPLANETS' },
 ] as const;
 
 export type TrackerMode = (typeof TRACKER_MODES)[number]['id'];

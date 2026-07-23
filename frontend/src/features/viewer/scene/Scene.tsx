@@ -4,7 +4,11 @@ import { Starfield } from './Starfield';
 
 export default function Scene() {
   return (
-    <Canvas camera={{ position: [0, 0, 6], fov: 45 }} dpr={[1, 2]}>
+    <Canvas
+      camera={{ position: [0, 0, 6], fov: 45 }}
+      dpr={[1, 2]}
+      style={{ pointerEvents: 'none' }}
+    >
       <ambientLight intensity={0.15} />
       <directionalLight position={[5, 3, 5]} intensity={1.6} />
 

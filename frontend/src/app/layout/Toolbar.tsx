@@ -2,6 +2,7 @@ import { ASTEROID_TABS } from '../../features/asteroid-tables/tabs.config';
 import { useActiveCategory } from '../../features/asteroid-tables/category.store';
 import { AsteroidSearch } from '../../features/asteroid-tables/AsteroidSearch';
 import { ExoplanetSearch } from '../../features/exoplanet-tracker/ExoplanetSearch';
+import { LatestDiscovery } from '../../features/exoplanet-tracker/LatestDiscovery';
 import { ImpactCountdown } from '../../features/impact-countdown/ImpactCountdown';
 import { useTrackerMode } from '../tracker.store';
 import { TrackerSwitch } from './TrackerSwitch';
@@ -40,6 +41,9 @@ export function Toolbar() {
         </div>
       ) : (
         <div className="toolbar__controls">
+          <div className="toolbar__controls-top">
+            <LatestDiscovery />
+          </div>
           <div className="toolbar__controls-bottom">
             <ExoplanetSearch />
           </div>

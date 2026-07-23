@@ -26,6 +26,9 @@ services:
         condition: service_healthy
     env_file:
       - backend/.env
+    environment:
+      # Use the local postgres container instead of the remote (Neon) DB from .env
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/beyond_the_pale_blue_dot
 
   api:
     build: backend
@@ -34,6 +37,9 @@ services:
       - "8000:8000"
     env_file:
       - backend/.env
+    environment:
+      # Use the local postgres container instead of the remote (Neon) DB from .env
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/beyond_the_pale_blue_dot
     volumes:
       - ./backend:/app
     depends_on:
