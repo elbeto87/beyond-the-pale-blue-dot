@@ -1,0 +1,43 @@
+name: Populate Exoplanets Database
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Todos los lunes a las 03:00 UTC
+    - cron: "0 3 * * 1"
+
+jobs:
+  populate-exoplanets:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Cache Poetry dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pypoetry
+          key: poetry-${{ runner.os }}-${{ hashFiles('backend/poetry.lock') }}
+          restore-keys: |
+            poetry-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: poetry install --only main --no-interaction
+
+      - name: Run populate exoplanets script
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: poetry run python -m script.populate_exoplanets_database
+
