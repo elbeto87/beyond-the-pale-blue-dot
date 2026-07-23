@@ -22,10 +22,13 @@ jobs:
     steps:
       - name: Ping health endpoint
         env:
-          BACKEND_URL: ${{ vars.BACKEND_URL }}
+          # Works whether BACKEND_URL was created as a repository variable
+          # (Settings -> Secrets and variables -> Actions -> Variables tab)
+          # or as a repository secret (Secrets tab).
+          BACKEND_URL: ${{ vars.BACKEND_URL || secrets.BACKEND_URL }}
         run: |
           if [ -z "$BACKEND_URL" ]; then
-            echo "::error::BACKEND_URL repository variable is not set."
+            echo "::error::BACKEND_URL is not set. Create it in Settings -> Secrets and variables -> Actions, either in the 'Variables' tab or the 'Secrets' tab, with the public URL of the Render service (e.g. https://my-backend.onrender.com)."
             exit 1
           fi
           # Retry a few times: the first hit may be a cold start (~1 min on Render)
