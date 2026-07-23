@@ -33,3 +33,12 @@ class ExoplanetRepository:
         )
         logger.debug("Executing query to get latest habitable exoplanet discoveries: {}", stmt)
         return self._session.execute(stmt).scalars().all()
+
+    def get_exoplanet(self, exoplanet_name: str) -> Sequence[ExoplanetModel] | None:
+        stmt = (
+            select(ExoplanetModel)
+            .where(
+                ExoplanetModel.name == exoplanet_name
+            )
+        )
+        return self._session.execute(stmt).scalar_one_or_none()

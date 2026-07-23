@@ -33,3 +33,17 @@ def get_latest_habitable_discoveries(
         return exoplanet_service.get_latest_habitable_exoplanet_discoveries(count=count)
     except ExoplanetNotFoundException:
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Exoplanets not found") from None
+
+
+@router.get("/{exoplanet_name}", response_model=ExoplanetSchema)
+def get_exoplanet(
+        exoplanet_name: str,
+        exoplanet_service: ExoplanetService = Depends(get_exoplanet_service),
+) -> ExoplanetSchema:
+    try:
+        exoplanet = exoplanet_service.get_exoplanet(exoplanet_name=exoplanet_name)
+        if exoplanet is None:
+            raise ExoplanetNotFoundException()
+        return exoplanet
+    except ExoplanetNotFoundException:
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Exoplanet not found") from None

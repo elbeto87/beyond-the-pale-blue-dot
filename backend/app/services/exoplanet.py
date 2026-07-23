@@ -20,3 +20,9 @@ class ExoplanetService:
             ExoplanetSchema.model_validate(exoplanet)
             for exoplanet in exoplanets
         ]
+
+    def get_exoplanet(self, exoplanet_name: str) -> ExoplanetSchema | None:
+        exoplanet = self.exoplanet_repository.get_exoplanet(exoplanet_name=exoplanet_name)
+        if exoplanet is None:
+            return None
+        return ExoplanetSchema.model_validate(exoplanet)
