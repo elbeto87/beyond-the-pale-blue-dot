@@ -59,3 +59,48 @@ class TestImpactEventRoutes:
         assert response.status_code == HTTPStatus.NOT_FOUND
         assert response.json()["detail"] == "Impact events not found"
 
+
+class TestExoplanetRoutes:
+    def test_latest_discoveries(self, exoplanet_client):
+        response = exoplanet_client.get("/exoplanet/latest_discoveries")
+
+        assert response.status_code == HTTPStatus.OK
+        body = response.json()
+        assert len(body) == 4
+        # Ordered by discovery year desc → "Unknown World" (2020) first.
+        assert body[0]["name"] == "Unknown World"
+
+    def test_latest_discoveries_respects_count(self, exoplanet_client):
+        response = exoplanet_client.get("/exoplanet/latest_discoveries", params={"count": 2})
+
+        assert response.status_code == HTTPStatus.OK
+        assert len(response.json()) == 2
+
+    def test_latest_discoveries_rejects_invalid_count(self, exoplanet_client):
+        response = exoplanet_client.get("/exoplanet/latest_discoveries", params={"count": 0})
+
+        assert response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
+
+    def test_latest_habitable_discoveries_filters_non_habitable(self, exoplanet_client):
+        response = exoplanet_client.get("/exoplanet/latest_habitable_discoveries")
+
+        assert response.status_code == HTTPStatus.OK
+        names = {planet["name"] for planet in response.json()}
+        assert names == {"Kepler-442 b", "Kepler-186 f"}
+
+    def test_latest_habitable_discoveries_respects_count(self, exoplanet_client):
+        response = exoplanet_client.get(
+            "/exoplanet/latest_habitable_discoveries", params={"count": 1}
+        )
+
+        assert response.status_code == HTTPStatus.OK
+        assert len(response.json()) == 1
+
+    def test_latest_habitable_discoveries_rejects_invalid_count(self, exoplanet_client):
+        response = exoplanet_client.get(
+            "/exoplanet/latest_habitable_discoveries", params={"count": 0}
+        )
+
+        assert response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
+
+

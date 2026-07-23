@@ -15,3 +15,6 @@ class ExoplanetSchema(BaseModel):
     orbit_eccentricity: float | None
     orbit_smax: float | None
     star_temperature: float | None
+
+    model_config = {"from_attributes": True}
+

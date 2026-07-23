@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from app.models.asteroid import AsteroidModel
 from app.models.impact_event import ImpactEventModel
 from app.repositories.asteroid import AsteroidRepository
+from app.repositories.exoplanet import ExoplanetRepository
 from app.repositories.impact_event import ImpactEventRepository
 
 
@@ -86,4 +87,47 @@ class TestImpactEventRepository:
         repo = ImpactEventRepository(session=session)
 
         assert repo.get_top_by_risk(time_range=10) == []
+
+
+class TestExoplanetRepository:
+    def test_get_latest_discoveries_orders_by_year_desc(self, seeded_exoplanet_session: Session):
+        repo = ExoplanetRepository(session=seeded_exoplanet_session)
+
+        exoplanets = repo.get_latest_exoplanet_discoveries()
+
+        years = [e.discovery_year for e in exoplanets]
+        assert years == sorted(years, reverse=True)
+        # "Unknown World" (2020) is the most recent discovery.
+        assert exoplanets[0].name == "Unknown World"
+
+    def test_get_latest_discoveries_respects_count_limit(self, seeded_exoplanet_session: Session):
+        repo = ExoplanetRepository(session=seeded_exoplanet_session)
+
+        assert len(repo.get_latest_exoplanet_discoveries(count=2)) == 2
+
+    def test_get_latest_habitable_only_returns_habitable(self, seeded_exoplanet_session: Session):
+        repo = ExoplanetRepository(session=seeded_exoplanet_session)
+
+        habitable = repo.get_latest_habitable_exoplanet_discoveries()
+
+        names = {e.name for e in habitable}
+        # Only the two planets within the habitable radius/insolation ranges.
+        assert names == {"Kepler-442 b", "Kepler-186 f"}
+        # The scorching hot-Jupiter and the NULL-valued planet are excluded.
+        assert "HD 209458 b" not in names
+        assert "Unknown World" not in names
+
+    def test_get_latest_habitable_orders_by_year_desc(self, seeded_exoplanet_session: Session):
+        repo = ExoplanetRepository(session=seeded_exoplanet_session)
+
+        habitable = repo.get_latest_habitable_exoplanet_discoveries()
+
+        # Kepler-442 b (2015) is more recent than Kepler-186 f (2014).
+        assert [e.name for e in habitable] == ["Kepler-442 b", "Kepler-186 f"]
+
+    def test_get_latest_habitable_respects_count_limit(self, seeded_exoplanet_session: Session):
+        repo = ExoplanetRepository(session=seeded_exoplanet_session)
+
+        assert len(repo.get_latest_habitable_exoplanet_discoveries(count=1)) == 1
+
 

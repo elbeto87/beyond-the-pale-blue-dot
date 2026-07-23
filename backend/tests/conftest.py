@@ -25,6 +25,7 @@ from app.api.dependencies import get_session  # noqa: E402
 from app.api.main import app  # noqa: E402
 from app.models.asteroid import AsteroidModel  # noqa: E402
 from app.models.base import Base  # noqa: E402
+from app.models.exoplanet import ExoplanetModel  # noqa: E402
 from app.models.impact_event import ImpactEventModel  # noqa: E402
 
 
@@ -102,6 +103,85 @@ def seeded_session(session: Session) -> Session:
 
 
 @pytest.fixture
+def seeded_exoplanet_session(session: Session) -> Session:
+    """Session pre-populated with habitable and non-habitable exoplanets.
+
+    Habitability (per the repository query) means ``radius`` in [0.5, 2] and
+    ``insolation`` in [0.25, 1.5]. Discovery year is used to test ordering.
+    """
+    session.add_all(
+        [
+            # Habitable, most recent discovery.
+            ExoplanetModel(
+                name="Kepler-442 b",
+                host_name="Kepler-442",
+                discovery_year=2015,
+                discovery_method="Transit",
+                radius=1.34,
+                mass=2.3,
+                density=5.0,
+                temperature=233.0,
+                insolation=0.7,
+                orbit_period=112.3,
+                orbit_eccentricity=0.04,
+                orbit_smax=0.4,
+                star_temperature=4402.0,
+            ),
+            # Habitable, older discovery.
+            ExoplanetModel(
+                name="Kepler-186 f",
+                host_name="Kepler-186",
+                discovery_year=2014,
+                discovery_method="Transit",
+                radius=1.17,
+                mass=1.4,
+                density=4.8,
+                temperature=188.0,
+                insolation=0.9,
+                orbit_period=129.9,
+                orbit_eccentricity=0.04,
+                orbit_smax=0.43,
+                star_temperature=3788.0,
+            ),
+            # Not habitable: radius too big and scorching insolation.
+            ExoplanetModel(
+                name="HD 209458 b",
+                host_name="HD 209458",
+                discovery_year=1999,
+                discovery_method="Transit",
+                radius=15.0,
+                mass=220.0,
+                density=0.37,
+                temperature=1449.0,
+                insolation=500.0,
+                orbit_period=3.5,
+                orbit_eccentricity=0.0,
+                orbit_smax=0.047,
+                star_temperature=6065.0,
+            ),
+            # Not habitable: missing radius/insolation (NULL) must be excluded.
+            ExoplanetModel(
+                name="Unknown World",
+                host_name="Unknown Star",
+                discovery_year=2020,
+                discovery_method="Radial Velocity",
+                radius=None,
+                mass=None,
+                density=None,
+                temperature=None,
+                insolation=None,
+                orbit_period=None,
+                orbit_eccentricity=None,
+                orbit_smax=None,
+                star_temperature=None,
+            ),
+        ]
+    )
+    session.commit()
+    return session
+
+
+@pytest.fixture
 def client(seeded_session: Session) -> Generator[TestClient, None, None]:
     """A FastAPI TestClient whose DB session is the seeded in-memory one."""
 
@@ -112,4 +192,18 @@ def client(seeded_session: Session) -> Generator[TestClient, None, None]:
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
+
+
+@pytest.fixture
+def exoplanet_client(seeded_exoplanet_session: Session) -> Generator[TestClient, None, None]:
+    """A FastAPI TestClient whose DB session is the exoplanet-seeded one."""
+
+    def override_get_session() -> Generator[Session, None, None]:
+        yield seeded_exoplanet_session
+
+    app.dependency_overrides[get_session] = override_get_session
+    with TestClient(app) as test_client:
+        yield test_client
+    app.dependency_overrides.clear()
+
 
