@@ -15,7 +15,7 @@ router = APIRouter(
 
 @router.get("/latest_discoveries", response_model=list[ExoplanetSchema])
 def get_latest_discoveries(
-        count: int = Query(10, ge=1, description="Number of latest exoplanet discoveries to retrieve"),
+        count: int = Query(50, ge=1, description="Number of latest exoplanet discoveries to retrieve"),
         exoplanet_service: ExoplanetService = Depends(get_exoplanet_service),
 ) -> list[ExoplanetSchema]:
     try:
@@ -26,7 +26,7 @@ def get_latest_discoveries(
 
 @router.get("/latest_habitable_discoveries", response_model=list[ExoplanetSchema])
 def get_latest_habitable_discoveries(
-        count: int = Query(10, ge=1, description="Number of latest habitable exoplanet discoveries to retrieve"),
+        count: int = Query(50, ge=1, description="Number of latest habitable exoplanet discoveries to retrieve"),
         exoplanet_service: ExoplanetService = Depends(get_exoplanet_service),
 ) -> list[ExoplanetSchema]:
     try:
