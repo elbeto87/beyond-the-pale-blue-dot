@@ -2,6 +2,7 @@ import { Toolbar } from './Toolbar';
 import { AsteroidViewer } from '../../features/viewer/AsteroidViewer';
 import { SimulationPanel } from '../../features/simulation-panel/SimulationPanel';
 import { ExoplanetTracker } from '../../features/exoplanet-tracker/ExoplanetTracker';
+import { ExoplanetPanel } from '../../features/exoplanet-tracker/ExoplanetPanel';
 import { useTrackerMode } from '../tracker.store';
 
 export function AppShell() {
@@ -10,20 +11,14 @@ export function AppShell() {
   return (
     <div className="app-shell">
       <Toolbar />
-      {mode === 'asteroid' ? (
-        <main className="app-shell__body">
-          <aside className="app-shell__sidebar">
-            <SimulationPanel />
-          </aside>
-          <section className="app-shell__viewer">
-            <AsteroidViewer />
-          </section>
-        </main>
-      ) : (
-        <main className="app-shell__body app-shell__body--single">
-          <ExoplanetTracker />
-        </main>
-      )}
+      <main className="app-shell__body">
+        <aside className="app-shell__sidebar">
+          {mode === 'asteroid' ? <SimulationPanel /> : <ExoplanetPanel />}
+        </aside>
+        <section className="app-shell__viewer">
+          {mode === 'asteroid' ? <AsteroidViewer /> : <ExoplanetTracker />}
+        </section>
+      </main>
     </div>
   );
 }

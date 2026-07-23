@@ -13,6 +13,7 @@ export default defineConfig({
     proxy: {
       '/impact_event': PROXY_TARGET,
       '/asteroid': PROXY_TARGET,
+      '/exoplanet': PROXY_TARGET,
     },
   },
 });

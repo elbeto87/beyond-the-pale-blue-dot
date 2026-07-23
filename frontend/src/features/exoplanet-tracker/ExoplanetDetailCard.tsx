@@ -37,21 +37,18 @@ export function ExoplanetDetailCard() {
   return (
     <div className="detail-card">
       <div className="detail-card__header">
-        <span className="detail-card__eyebrow">EXOPLANET NAME</span>
+        <span className="detail-card__eyebrow">EXOPLANET</span>
         <h3 className="detail-card__name">{exoplanet.name}</h3>
       </div>
 
-      <div className="detail-card__section">
-        <span className="detail-card__section-title">Properties</span>
-        <ul className="exoplanet-property-list">
-          {rows.map((row) => (
-            <li key={row.label} className="exoplanet-property-list__item">
-              <span className="exoplanet-property-list__label">{row.label}</span>
-              <span className="exoplanet-property-list__value">{row.value}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <dl className="detail-card__grid">
+        {rows.map((row) => (
+          <div key={row.label} className="detail-card__row">
+            <dt className="detail-card__label">{row.label}</dt>
+            <dd className="detail-card__value">{row.value}</dd>
+          </div>
+        ))}
+      </dl>
     </div>
   );
 }
