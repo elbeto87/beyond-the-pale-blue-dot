@@ -785,6 +785,26 @@
   cursor: default;
 }
 
+.adv-search__back {
+  align-self: flex-start;
+  margin-bottom: 14px;
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.adv-search__back:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
   .app-shell {

@@ -68,6 +68,8 @@ export function ExoplanetAdvancedSearchPanel() {
   const [results, setResults] = useState<Exoplanet[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // 'filters' shows the form; 'results' swaps it for the results list.
+  const [view, setView] = useState<'filters' | 'results'>('filters');
   // Load the available discovery methods once.
   useEffect(() => {
     let cancelled = false;
@@ -125,22 +127,68 @@ export function ExoplanetAdvancedSearchPanel() {
     setLoading(true);
     setError(null);
     advancedSearchExoplanets(filters, MAX_RESULTS)
-      .then((data) => setResults(data))
+      .then((data) => {
+        setResults(data);
+        setView('results');
+      })
       .catch((err) => {
         setError(String(err));
         setResults(null);
       })
       .finally(() => setLoading(false));
   }
+  const showResults = view === 'results' && results != null;
+
   return (
     <div className="sim-panel">
       <div className="sim-panel__head">
         <h2 className="sim-panel__title">ADVANCED SEARCH</h2>
       </div>
       <p className="sim-panel__subtitle">
-        Filter the exoplanet catalog. Up to {MAX_RESULTS} results are shown.
+        {showResults
+          ? results.length === 0
+            ? 'No exoplanets match the filters.'
+            : results.length === MAX_RESULTS
+              ? `Showing the first ${MAX_RESULTS} results.`
+              : `${results.length} result${results.length === 1 ? '' : 's'} found.`
+          : `Filter the exoplanet catalog. Up to ${MAX_RESULTS} results are shown.`}
       </p>
-      <form className="adv-search" onSubmit={handleSubmit}>
+
+      {showResults ? (
+        <>
+          <button
+            type="button"
+            className="adv-search__back"
+            onClick={() => setView('filters')}
+          >
+            &larr; EDIT FILTERS
+          </button>
+          <div className="sim-panel__list">
+            {results.length > 0 && (
+              <div className="risk-head risk-head--exo">
+                <span className="risk-head__rank" />
+                <span className="risk-head__name">Exoplanet Name</span>
+                <span className="risk-head__score">Discovered</span>
+              </div>
+            )}
+            {results.map((exoplanet, index) => (
+              <button
+                key={exoplanet.name}
+                type="button"
+                className={`risk-row risk-row--exo${exoplanet.name === selected?.name ? ' is-selected' : ''}`}
+                onClick={() => setExoplanet(exoplanet)}
+              >
+                <span className="risk-row__rank">{index + 1}</span>
+                <span className="risk-row__name">{exoplanet.name}</span>
+                <span className="risk-row__score">
+                  {exoplanet.discovery_pubdate ?? exoplanet.discovery_year ?? '—'}
+                </span>
+              </button>
+            ))}
+          </div>
+        </>
+      ) : (
+        <form className="adv-search" onSubmit={handleSubmit}>
         <fieldset className="adv-search__group">
           <legend className="adv-search__legend">Discovery year</legend>
           <DualRangeSlider
@@ -239,41 +287,9 @@ export function ExoplanetAdvancedSearchPanel() {
         <button type="submit" className="adv-search__submit" disabled={loading}>
           {loading ? 'SEARCHING...' : 'SEARCH'}
         </button>
-      </form>
-      <div className="sim-panel__list">
         {error && <span className="sim-panel__hint">Error: {error}</span>}
-        {!loading && !error && results != null && results.length === 0 && (
-          <span className="sim-panel__hint">No exoplanets match the filters.</span>
-        )}
-        {!loading && !error && results != null && results.length > 0 && (
-          <>
-            <span className="sim-panel__hint">
-              {results.length === MAX_RESULTS
-                ? `Showing the first ${MAX_RESULTS} results.`
-                : `${results.length} result${results.length === 1 ? '' : 's'} found.`}
-            </span>
-            <div className="risk-head risk-head--exo">
-              <span className="risk-head__rank" />
-              <span className="risk-head__name">Exoplanet Name</span>
-              <span className="risk-head__score">Discovered</span>
-            </div>
-            {results.map((exoplanet, index) => (
-              <button
-                key={exoplanet.name}
-                type="button"
-                className={`risk-row risk-row--exo${exoplanet.name === selected?.name ? ' is-selected' : ''}`}
-                onClick={() => setExoplanet(exoplanet)}
-              >
-                <span className="risk-row__rank">{index + 1}</span>
-                <span className="risk-row__name">{exoplanet.name}</span>
-                <span className="risk-row__score">
-                  {exoplanet.discovery_pubdate ?? exoplanet.discovery_year ?? '—'}
-                </span>
-              </button>
-            ))}
-          </>
-        )}
-      </div>
+      </form>
+      )}
     </div>
   );
 }
