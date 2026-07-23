@@ -25,3 +25,12 @@ export async function fetchLatestExoplanetDiscoveries(count = 10): Promise<Exopl
   return fetchWithCache<Exoplanet[]>(`${API_BASE}/exoplanet/latest_discoveries?${params}`);
 }
 
+/**
+ * Fetches potentially habitable exoplanets (Earth-like radius and insolation),
+ * ordered by discovery date (most recent first).
+ */
+export async function fetchHabitableExoplanetDiscoveries(count = 1000): Promise<Exoplanet[]> {
+  const params = new URLSearchParams({ count: String(count) });
+  return fetchWithCache<Exoplanet[]>(`${API_BASE}/exoplanet/latest_habitable_discoveries?${params}`);
+}
+

@@ -31,7 +31,10 @@ class ExoplanetRepository:
                 ExoplanetModel.radius.between(0.5, 2),
                 ExoplanetModel.insolation.between(0.5, 1.5),
             )
-            .order_by(ExoplanetModel.discovery_year.desc())
+            .order_by(
+                ExoplanetModel.discovery_year.desc(),
+                ExoplanetModel.discovery_pubdate.desc().nulls_last(),
+            )
             .limit(count)
         )
         logger.debug("Executing query to get latest habitable exoplanet discoveries: {}", stmt)

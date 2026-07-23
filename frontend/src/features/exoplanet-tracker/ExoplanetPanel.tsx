@@ -1,26 +1,37 @@
 import { useEffect, useState } from 'react';
 import type { Exoplanet } from '../../shared/api/types';
-import { fetchLatestExoplanetDiscoveries } from '../../shared/api/exoplanet';
+import {
+  fetchHabitableExoplanetDiscoveries,
+  fetchLatestExoplanetDiscoveries,
+} from '../../shared/api/exoplanet';
 import { useSelectedExoplanet } from './selectedExoplanet.store';
+import { useActiveExoplanetCategory } from './category.store';
 
 /**
  * Left sidebar for the exoplanet view. Mirrors the asteroid simulation panel
- * structure so both pages share the same layout and cosmetics. Lists the ten
- * most recently discovered exoplanets, sorted by discovery year.
+ * structure so both pages share the same layout and cosmetics. Lists either
+ * the ten most recently discovered exoplanets or the potentially habitable
+ * ones, depending on the active toolbar tab.
  */
 export function ExoplanetPanel() {
   const selected = useSelectedExoplanet((s) => s.exoplanet);
   const setExoplanet = useSelectedExoplanet((s) => s.setExoplanet);
+  const category = useActiveExoplanetCategory((s) => s.active);
 
   const [exoplanets, setExoplanets] = useState<Exoplanet[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const isHabitable = category === 'habitable';
+
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     setError(null);
-    fetchLatestExoplanetDiscoveries(10)
+    const request = isHabitable
+      ? fetchHabitableExoplanetDiscoveries(1000)
+      : fetchLatestExoplanetDiscoveries(10);
+    request
       .then((data) => {
         if (!cancelled) setExoplanets(data);
       })
@@ -33,14 +44,20 @@ export function ExoplanetPanel() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [isHabitable]);
 
   return (
     <div className="sim-panel">
       <div className="sim-panel__head">
-        <h2 className="sim-panel__title">LATEST DISCOVERIES</h2>
+        <h2 className="sim-panel__title">
+          {isHabitable ? 'POTENTIALLY HABITABLE' : 'LATEST DISCOVERIES'}
+        </h2>
       </div>
-      <p className="sim-panel__subtitle">The ten most recently discovered exoplanets.</p>
+      <p className="sim-panel__subtitle">
+        {isHabitable
+          ? 'Exoplanets with Earth-like radius and insolation, sorted by discovery date.'
+          : 'The ten most recently discovered exoplanets.'}
+      </p>
 
       <div className="sim-panel__list">
         {loading && <span className="sim-panel__hint">Loading...</span>}
