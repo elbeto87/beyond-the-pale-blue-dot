@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { useSelectedExoplanet } from './selectedExoplanet.store';
+import { classifyPlanet, temperatureToColor } from './scene/exoplanetVisuals';
 
 function formatValue(value: number | string | null, unit = '', maxDecimals = 4): string {
   if (value === null || value === undefined) return '—';
@@ -20,10 +22,14 @@ function kelvinToCelsius(kelvin: number | null): number | null {
  */
 export function ExoplanetDetailCard() {
   const exoplanet = useSelectedExoplanet((s) => s.exoplanet);
+  const [collapsed, setCollapsed] = useState(false);
 
   if (!exoplanet) {
     return null;
   }
+
+  const { label: kindLabel } = classifyPlanet(exoplanet);
+  const tempColor = `#${temperatureToColor(exoplanet.temperature).getHexString()}`;
 
   const rows: Array<{ label: string; value: string }> = [
     { label: 'Host star', value: formatValue(exoplanet.host_name) },
@@ -41,20 +47,37 @@ export function ExoplanetDetailCard() {
   ];
 
   return (
-    <div className="detail-card">
-      <div className="detail-card__header">
-        <span className="detail-card__eyebrow">EXOPLANET</span>
-        <h3 className="detail-card__name">{exoplanet.name}</h3>
-      </div>
+    <div className={`detail-card detail-card--overlay${collapsed ? ' detail-card--collapsed' : ''}`}>
+      <button
+        type="button"
+        className="detail-card__toggle"
+        onClick={() => setCollapsed((c) => !c)}
+        aria-expanded={!collapsed}
+        aria-label={collapsed ? 'Show exoplanet info' : 'Hide exoplanet info'}
+        title={collapsed ? 'Show info' : 'Hide info'}
+      >
+        {collapsed ? '‹' : '›'}
+      </button>
 
-      <dl className="detail-card__grid">
-        {rows.map((row) => (
-          <div key={row.label} className="detail-card__row">
-            <dt className="detail-card__label">{row.label}</dt>
-            <dd className="detail-card__value">{row.value}</dd>
-          </div>
-        ))}
-      </dl>
+      <div className="detail-card__content">
+        <div className="detail-card__header">
+          <span className="detail-card__eyebrow">EXOPLANET</span>
+          <h3 className="detail-card__name">{exoplanet.name}</h3>
+          <span className="detail-card__kind">
+            <span className="detail-card__temp-chip" style={{ backgroundColor: tempColor }} />
+            {kindLabel}
+          </span>
+        </div>
+
+        <dl className="detail-card__grid">
+          {rows.map((row) => (
+            <div key={row.label} className="detail-card__row">
+              <dt className="detail-card__label">{row.label}</dt>
+              <dd className="detail-card__value">{row.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
     </div>
   );
 }
