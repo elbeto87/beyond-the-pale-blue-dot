@@ -30,6 +30,16 @@ app.include_router(asteroid.router, prefix="/asteroid")
 app.include_router(impact_event.router, prefix="/impact_event")
 app.include_router(exoplanet.router, prefix="/exoplanet")
 
+
+@app.get("/health", tags=["health"], summary="Liveness probe")
+async def health() -> dict[str, str]:
+    """Lightweight liveness endpoint used by uptime monitors / keep-alive pings.
+
+    It intentionally avoids touching the database so pings stay cheap.
+    """
+    return {"status": "ok"}
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.ALLOWED_ORIGINS,
