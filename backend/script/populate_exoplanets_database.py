@@ -59,8 +59,8 @@ def populate_exoplanet_database():
                     orbit_smax=exoplanet.get("pl_orbsmax"),
                     star_temperature=exoplanet.get("st_teff"),
                 )
-                session.add(exoplanet_to_add)
-                logger.info("Added exoplanet: {}", exoplanet_to_add.name)
+                session.merge(exoplanet_to_add)
+                logger.info("Upserted exoplanet: {}", exoplanet_to_add.name)
             session.commit()
     except Exception as e:
         session.rollback()
