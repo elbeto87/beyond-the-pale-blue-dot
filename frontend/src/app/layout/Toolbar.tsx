@@ -1,6 +1,7 @@
 import { ASTEROID_TABS } from '../../features/asteroid-tables/tabs.config';
 import { useActiveCategory } from '../../features/asteroid-tables/category.store';
 import { AsteroidSearch } from '../../features/asteroid-tables/AsteroidSearch';
+import { ExoplanetSearch } from '../../features/exoplanet-tracker/ExoplanetSearch';
 import { ImpactCountdown } from '../../features/impact-countdown/ImpactCountdown';
 import { useTrackerMode } from '../tracker.store';
 import { TrackerSwitch } from './TrackerSwitch';
@@ -16,7 +17,7 @@ export function Toolbar() {
         <span className="toolbar__brand">BEYOND&nbsp;THE&nbsp;PALE&nbsp;BLUE&nbsp;DOT</span>
         <TrackerSwitch />
       </div>
-      {mode === 'asteroid' && (
+      {mode === 'asteroid' ? (
         <div className="toolbar__controls">
           <div className="toolbar__controls-top">
             <ImpactCountdown />
@@ -35,6 +36,12 @@ export function Toolbar() {
               ))}
             </nav>
             <AsteroidSearch />
+          </div>
+        </div>
+      ) : (
+        <div className="toolbar__controls">
+          <div className="toolbar__controls-bottom">
+            <ExoplanetSearch />
           </div>
         </div>
       )}

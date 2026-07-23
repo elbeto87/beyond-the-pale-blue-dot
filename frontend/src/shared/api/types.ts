@@ -13,3 +13,20 @@ export interface ImpactEvent {
   energy: number;
   dangerous_score: number;
 }
+
+export interface Exoplanet {
+  name: string;
+  host_name: string | null;
+  discovery_year: number | null;
+  discovery_method: string | null;
+  radius: number | null;
+  mass: number | null;
+  density: number | null;
+  temperature: number | null;
+  insolation: number | null;
+  orbit_period: number | null;
+  orbit_eccentricity: number | null;
+  orbit_smax: number | null;
+  star_temperature: number | null;
+}
+

@@ -21,6 +21,13 @@ class ExoplanetService:
             for exoplanet in exoplanets
         ]
 
+    def search_exoplanets(self, query: str, count: int = 10) -> list[ExoplanetSchema]:
+        exoplanets = self.exoplanet_repository.search_by_name(query, count)
+        return [
+            ExoplanetSchema.model_validate(exoplanet)
+            for exoplanet in exoplanets
+        ]
+
     def get_exoplanet(self, exoplanet_name: str) -> ExoplanetSchema | None:
         exoplanet = self.exoplanet_repository.get_exoplanet(exoplanet_name=exoplanet_name)
         if exoplanet is None:
