@@ -202,22 +202,6 @@ export function ExoplanetAdvancedSearchPanel() {
           />
         </fieldset>
         <fieldset className="adv-search__group">
-          <legend className="adv-search__legend">Discovery method</legend>
-          <div className="adv-search__checks">
-            {methods.length === 0 && <span className="sim-panel__hint">Loading methods...</span>}
-            {methods.map((method) => (
-              <label key={method} className="adv-search__check">
-                <input
-                  type="checkbox"
-                  checked={selectedMethods.has(method)}
-                  onChange={() => setSelectedMethods((prev) => toggle(prev, method))}
-                />
-                <span>{method}</span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-        <fieldset className="adv-search__group">
           <legend className="adv-search__legend">Insolation</legend>
           <DualRangeSlider
             min={INSOLATION_DOMAIN.min}
@@ -268,6 +252,22 @@ export function ExoplanetAdvancedSearchPanel() {
             formatValue={formatCelsius}
             ariaLabel="Host star temperature"
           />
+        </fieldset>
+        <fieldset className="adv-search__group">
+          <legend className="adv-search__legend">Discovery method</legend>
+          <div className="adv-search__checks">
+            {methods.length === 0 && <span className="sim-panel__hint">Loading methods...</span>}
+            {methods.map((method) => (
+              <label key={method} className="adv-search__check">
+                <input
+                  type="checkbox"
+                  checked={selectedMethods.has(method)}
+                  onChange={() => setSelectedMethods((prev) => toggle(prev, method))}
+                />
+                <span>{method}</span>
+              </label>
+            ))}
+          </div>
         </fieldset>
         <fieldset className="adv-search__group">
           <legend className="adv-search__legend">Planet type</legend>
