@@ -6,12 +6,14 @@ import {
 } from '../../shared/api/exoplanet';
 import { useSelectedExoplanet } from './selectedExoplanet.store';
 import { useActiveExoplanetCategory } from './category.store';
+import { ExoplanetAdvancedSearchPanel } from './ExoplanetAdvancedSearchPanel';
 
 /**
  * Left sidebar for the exoplanet view. Mirrors the asteroid simulation panel
  * structure so both pages share the same layout and cosmetics. Lists either
  * the ten most recently discovered exoplanets or the potentially habitable
- * ones, depending on the active toolbar tab.
+ * ones, depending on the active toolbar tab. When the "ADVANCED SEARCH" tab
+ * is active, renders the advanced search panel instead.
  */
 export function ExoplanetPanel() {
   const selected = useSelectedExoplanet((s) => s.exoplanet);
@@ -23,8 +25,10 @@ export function ExoplanetPanel() {
   const [error, setError] = useState<string | null>(null);
 
   const isHabitable = category === 'habitable';
+  const isAdvanced = category === 'advanced';
 
   useEffect(() => {
+    if (isAdvanced) return;
     let cancelled = false;
     setLoading(true);
     setError(null);
@@ -44,7 +48,11 @@ export function ExoplanetPanel() {
     return () => {
       cancelled = true;
     };
-  }, [isHabitable]);
+  }, [isHabitable, isAdvanced]);
+
+  if (isAdvanced) {
+    return <ExoplanetAdvancedSearchPanel />;
+  }
 
   return (
     <div className="sim-panel">

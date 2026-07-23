@@ -44,6 +44,47 @@ def search_exoplanets(
     return exoplanet_service.search_exoplanets(q, count=count)
 
 
+@router.get("/discovery_methods", response_model=list[str])
+def get_discovery_methods(
+        exoplanet_service: ExoplanetService = Depends(get_exoplanet_service),
+) -> list[str]:
+    return exoplanet_service.get_discovery_methods()
+
+
+@router.get("/advanced_search", response_model=list[ExoplanetSchema])
+def advanced_search(
+        year_min: int | None = Query(None, description="Minimum discovery year"),
+        year_max: int | None = Query(None, description="Maximum discovery year"),
+        discovery_methods: list[str] | None = Query(None, description="Discovery methods to include"),
+        insolation_min: float | None = Query(None, description="Minimum insolation flux (Earth flux)"),
+        insolation_max: float | None = Query(None, description="Maximum insolation flux (Earth flux)"),
+        temperature_min: float | None = Query(None, description="Minimum equilibrium temperature (K)"),
+        temperature_max: float | None = Query(None, description="Maximum equilibrium temperature (K)"),
+        orbit_period_min: float | None = Query(None, description="Minimum orbital period (days)"),
+        orbit_period_max: float | None = Query(None, description="Maximum orbital period (days)"),
+        star_temperature_min: float | None = Query(None, description="Minimum host star temperature (K)"),
+        star_temperature_max: float | None = Query(None, description="Maximum host star temperature (K)"),
+        planet_types: list[str] | None = Query(None, description="Planet types to include"),
+        count: int = Query(100, ge=1, le=100, description="Maximum number of results to retrieve"),
+        exoplanet_service: ExoplanetService = Depends(get_exoplanet_service),
+) -> list[ExoplanetSchema]:
+    return exoplanet_service.advanced_search(
+        year_min=year_min,
+        year_max=year_max,
+        discovery_methods=discovery_methods,
+        insolation_min=insolation_min,
+        insolation_max=insolation_max,
+        temperature_min=temperature_min,
+        temperature_max=temperature_max,
+        orbit_period_min=orbit_period_min,
+        orbit_period_max=orbit_period_max,
+        star_temperature_min=star_temperature_min,
+        star_temperature_max=star_temperature_max,
+        planet_types=planet_types,
+        count=count,
+    )
+
+
 @router.get("/{exoplanet_name}", response_model=ExoplanetSchema)
 def get_exoplanet(
         exoplanet_name: str,
