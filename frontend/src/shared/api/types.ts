@@ -18,6 +18,7 @@ export interface Exoplanet {
   name: string;
   host_name: string | null;
   discovery_year: number | null;
+  discovery_pubdate: string | null;
   discovery_method: string | null;
   radius: number | null;
   mass: number | null;

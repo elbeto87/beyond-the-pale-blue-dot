@@ -10,6 +10,7 @@ class ExoplanetModel(Base):
     name: Mapped[str] = mapped_column(String, primary_key=True)
     host_name: Mapped[str | None] = mapped_column(String, nullable=True)
     discovery_year: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    discovery_pubdate: Mapped[str | None] = mapped_column(String, nullable=True)
     discovery_method: Mapped[str | None] = mapped_column(String, nullable=True)
     radius: Mapped[float | None] = mapped_column(Float, nullable=True)
     mass: Mapped[float | None] = mapped_column(Float, nullable=True)

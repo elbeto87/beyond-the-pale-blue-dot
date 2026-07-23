@@ -5,6 +5,7 @@ class ExoplanetSchema(BaseModel):
     name: str
     host_name: str | None
     discovery_year: int | None
+    discovery_pubdate: str | None
     discovery_method: str | None
     radius: float | None
     mass: float | None

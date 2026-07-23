@@ -9,7 +9,7 @@ from app.models.exoplanet import ExoplanetModel
 def get_exoplanet_data(client: httpx.Client) -> list[dict]:
     params = {
         "query": (
-            "SELECT pl_name, hostname, disc_year, discoverymethod, "
+            "SELECT pl_name, hostname, disc_year, disc_pubdate, discoverymethod, "
             "pl_rade, pl_bmasse, pl_dens, pl_eqt, pl_insol, "
             "pl_orbper, pl_orbeccen, pl_orbsmax, "
             "st_teff "
@@ -47,6 +47,7 @@ def populate_exoplanet_database():
                     name=exoplanet.get("pl_name"),
                     host_name=exoplanet.get("hostname"),
                     discovery_year=exoplanet.get("disc_year"),
+                    discovery_pubdate=exoplanet.get("disc_pubdate"),
                     discovery_method=exoplanet.get("discoverymethod"),
                     radius=exoplanet.get("pl_rade"),
                     mass=exoplanet.get("pl_bmasse"),

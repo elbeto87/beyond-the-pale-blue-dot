@@ -15,7 +15,10 @@ class ExoplanetRepository:
     def get_latest_exoplanet_discoveries(self, count: int = 10) -> Sequence[ExoplanetModel]:
         stmt = (
             select(ExoplanetModel)
-            .order_by(ExoplanetModel.discovery_year.desc())
+            .order_by(
+                ExoplanetModel.discovery_year.desc(),
+                ExoplanetModel.discovery_pubdate.desc().nulls_last(),
+            )
             .limit(count)
         )
         logger.debug("Executing query to get latest exoplanet discoveries: {}", stmt)

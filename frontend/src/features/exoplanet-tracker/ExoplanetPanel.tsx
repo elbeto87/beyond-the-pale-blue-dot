@@ -52,7 +52,7 @@ export function ExoplanetPanel() {
           <div className="risk-head risk-head--exo">
             <span className="risk-head__rank" />
             <span className="risk-head__name">Exoplanet Name</span>
-            <span className="risk-head__score">Year</span>
+            <span className="risk-head__score">Discovered</span>
           </div>
         )}
         {exoplanets.map((exoplanet, index) => (
@@ -64,7 +64,9 @@ export function ExoplanetPanel() {
           >
             <span className="risk-row__rank">{index + 1}</span>
             <span className="risk-row__name">{exoplanet.name}</span>
-            <span className="risk-row__score">{exoplanet.discovery_year ?? '—'}</span>
+            <span className="risk-row__score">
+              {exoplanet.discovery_pubdate ?? exoplanet.discovery_year ?? '—'}
+            </span>
           </button>
         ))}
       </div>
