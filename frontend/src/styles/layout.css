@@ -698,6 +698,30 @@
   .asteroid-search {
     width: 100%;
   }
+
+  /* Exoplanet detail card covers the whole viewer instead of a cramped half */
+  .detail-card--overlay {
+    width: 100%;
+    border-left: none;
+  }
+
+  /* Slide out but keep a 32px rail with the toggle arrow visible */
+  .detail-card--collapsed {
+    transform: translateX(calc(100% - 32px));
+  }
+
+  /* Toggle sits inside the card's left edge instead of sticking out */
+  .detail-card__toggle {
+    left: 0;
+    border-left: none;
+    border-right: 1px solid var(--border);
+    border-radius: 0 8px 8px 0;
+  }
+
+  /* Leave room for the toggle rail so it never overlaps the labels */
+  .detail-card--overlay .detail-card__content {
+    padding-left: 48px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -740,6 +764,15 @@
 
   .detail-card {
     padding: 22px 20px;
+  }
+
+  /* The overlay card keeps its padding on __content (room for the toggle) */
+  .detail-card--overlay {
+    padding: 0;
+  }
+
+  .detail-card--overlay .detail-card__content {
+    padding: 22px 20px 22px 48px;
   }
 
   .detail-card__name {
